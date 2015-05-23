@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
 
 public class RenderingEngine extends MappedValues
 {
@@ -69,9 +68,13 @@ public class RenderingEngine extends MappedValues
 		throw new IllegalArgumentException(uniformType + " is not a supported type in RenderingEngine");
 	}
 
-	public void Render(GameObject object)
+	public void Render(GameObject object) throws IllegalStateException
 	{
-		if (GetMainCamera() == null) System.err.println("Error! Main camera not found. This is very very big bug, and game will crash.");
+		if (GetMainCamera() == null) 
+		{
+			System.err.println("Error! Main camera not found. This is very very big bug, and game will crash.");
+			throw new IllegalStateException("Camera was not attached to the RenderingEngine");
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		object.RenderAll(m_forwardAmbient, this);
