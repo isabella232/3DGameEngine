@@ -18,18 +18,19 @@ package com.base.engine.rendering.resourceManagement;
 
 import static org.lwjgl.opengl.GL15.*;
 
-public class MeshResource extends ReferenceCounter
+public class MeshResource
 {
 	private int m_vbo;
 	private int m_ibo;
 	private int m_size;
+	private int m_refCount;
 
 	public MeshResource(int size)
 	{
 		m_vbo = glGenBuffers();
 		m_ibo = glGenBuffers();
 		this.m_size = size;
-		AddReference();
+		this.m_refCount = 1;
 	}
 
 	@Override
@@ -37,6 +38,17 @@ public class MeshResource extends ReferenceCounter
 	{
 		glDeleteBuffers(m_vbo);
 		glDeleteBuffers(m_ibo);
+	}
+
+	public void AddReference()
+	{
+		m_refCount++;
+	}
+
+	public boolean RemoveReference()
+	{
+		m_refCount--;
+		return m_refCount == 0;
 	}
 
 	public int GetVbo()  { return m_vbo; }
