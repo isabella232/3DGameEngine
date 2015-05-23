@@ -28,7 +28,6 @@ public class ShaderResource extends ReferenceCounter
 	private HashMap<String, Integer> m_uniforms;
 	private ArrayList<String>        m_uniformNames;
 	private ArrayList<String>        m_uniformTypes;
-	private int                      m_refCount;
 
 	public ShaderResource()
 	{
