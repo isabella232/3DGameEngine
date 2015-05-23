@@ -31,11 +31,75 @@ public class FreeMove extends GameComponent
 	
 	private float   m_sensitivity; // Used for affecting roll speed.
 
+	/**
+	 * {@link FreeMove} constructor for fixed axis free look.
+	 * See {@link FreeLook} for more information
+	 * @param speed - The movement speed.
+	 */
+	public FreeMove(float speed) 
+	{
+		this(speed, 0f);
+	}
+	
+	/**
+	 * {@link FreeMove} constructor for full gimble rotation.
+	 * 
+	 * @param speed - The movement speed
+	 * @param rotationSensitivity - The rotational sensitivity of the camera
+	 */
 	public FreeMove(float speed, float rotationSensitivity)
 	{
 		this(speed, rotationSensitivity, Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D, Input.KEY_Q, Input.KEY_E);
 	}
+	
+	/**
+	 * {@link FreeMove} constructor for fixed axis free look that does NOT allow rotation keys to be set.
+	 * Use the FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey, int rotLeft, int rotRight); if 
+	 * you would like to be able to rotate the camera.
+	 * 
+	 * See {@link FreeLook} for more information.
+	 * 
+	 * @param speed - The movement speed.
+	 * @param forwardKey - Key used to move forward. See {@link Input} for values.
+	 * @param backKey - Key used to move back. See {@link Input} for values.
+	 * @param leftKey - Key used to strafe left. See {@link Input} for values.
+	 * @param rightKey - Key used to strafe right. See {@link Input} for values.
+	 */
+	public FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey) 
+	{
+		this(speed, forwardKey, backKey, leftKey, rightKey, 0, 0);
+	}
 
+	/**
+	 * {@link FreeMove} constructor for fixed axis free look that allows rotation keys to be set.
+	 * See {@link FreeLook} for more information.
+	 * 
+	 * @param speed - The movement speed.
+	 * @param forwardKey - Key used to move forward. See {@link Input} for values.
+	 * @param backKey - Key used to move back. See {@link Input} for values.
+	 * @param leftKey - Key used to strafe left. See {@link Input} for values.
+	 * @param rightKey - Key used to strafe right. See {@link Input} for values.
+	 * @param rotLeft - Key used to rotate left. See {@link Input} for values.
+	 * @param rotRight - Key used to rotate right. See {@link Input} for values.
+	 */
+	public FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey, int rotLeft, int rotRight) 
+	{
+		this(speed, 0f, forwardKey, backKey, leftKey, rightKey, rotLeft, rotRight);
+	}
+	
+	/**
+	 * {@link FreeMove} constructor for full gimble free look that allows rotation keys to be set.
+	 * See {@link FreeLook} for more information.
+	 * 
+	 * @param speed - The movement speed.
+	 * @param rotationSensitivity - The rotational sensitivity of the camera
+	 * @param forwardKey - Key used to move forward. See {@link Input} for values.
+	 * @param backKey - Key used to move back. See {@link Input} for values.
+	 * @param leftKey - Key used to strafe left. See {@link Input} for values.
+	 * @param rightKey - Key used to strafe right. See {@link Input} for values.
+	 * @param rotLeft - Key used to rotate left. See {@link Input} for values.
+	 * @param rotRight - Key used to rotate right. See {@link Input} for values.
+	 */
 	public FreeMove(float speed, float rotationSensitivity, int forwardKey, int backKey, int leftKey, int rightKey, int rotLeft, int rotRight)
 	{
 		this.m_speed = speed;

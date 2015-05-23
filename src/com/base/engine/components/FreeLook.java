@@ -30,11 +30,45 @@ public class FreeLook extends GameComponent
 	private int     m_unlockMouseKey;
 	private boolean m_fixedAxis;
 
+	/**
+	 * Fixed axsis free look constructor.
+	 * 
+	 * @param sensitivity - Rotational speed of the camera
+	 */
+	public FreeLook(float sensitivity) 
+	{
+		this(sensitivity, true);
+	}
+	
+	/**
+	 * Full gimble free look constructor.
+	 * 
+	 * @param sensitivity - Rotational speed of the camera
+	 * @param fixedAxis - If set to false, use full gimble rotation. If true, use fixed axis rotation.
+	 */
 	public FreeLook(float sensitivity, boolean fixedAxis)
 	{
 		this(sensitivity, Input.KEY_ESCAPE, fixedAxis);
 	}
 
+	/**
+	 * Fixed axis free look constructor.
+	 * 
+	 * @param sensitivity - Rotational speed of the camera
+	 * @param unlockMouseKey - Key to release mouse from mouse capture. See {@link Input} for values.
+	 */
+	public FreeLook(float sensitivity, int unlockMouseKey) 
+	{
+		this(sensitivity, unlockMouseKey, true);
+	}
+	
+	/**
+	 * Full gimble free look constructor.
+	 * 
+	 * @param sensitivity - Rotational speed of the camera
+	 * @param unlockMouseKey - Key to release mouse from mouse capture. See {@link Input} for values.
+	 * @param fixedAxis - If set to false, use full gimble rotation. If true, use fixed axis rotation.
+	 */
 	public FreeLook(float sensitivity, int unlockMouseKey, boolean fixedAxis)
 	{
 		this.m_sensitivity = sensitivity;
@@ -69,7 +103,7 @@ public class FreeLook extends GameComponent
 			if(rotY)
 				GetTransform().Rotate(m_fixedAxis ? Y_AXIS : GetTransform().GetRot().GetUp(), (float) Math.toRadians(deltaPos.GetX() * m_sensitivity));
 			if(rotX)
-				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(-deltaPos.GetY() * m_sensitivity));
+				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(-deltaPos.GetY() * m_sensitivity)); // TODO: Check for fixed axis lock.
 
 			if(rotY || rotX)
 				Input.SetMousePosition(centerPosition);
