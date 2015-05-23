@@ -24,7 +24,6 @@ import com.base.engine.core.*;
 import com.base.engine.rendering.resourceManagement.ShaderResource;
 
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL32.*;
 
 import java.io.BufferedReader;
