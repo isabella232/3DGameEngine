@@ -35,6 +35,21 @@ public class GameObject
 		m_engine = null;
 	}
 
+	public boolean HasChildren() 
+	{
+		return m_children != null && !m_children.isEmpty();
+	}
+	
+	public boolean HasComponents() 
+	{
+		return m_components != null && !m_components.isEmpty();
+	}
+	
+	public boolean HasAttached() 
+	{
+		return HasChildren() || HasComponents();
+	}
+	
 	public GameObject AddChild(GameObject child)
 	{
 		
@@ -68,7 +83,7 @@ public class GameObject
 	{
 		Input(delta);
 
-		if (m_children == null)
+		if (!HasChildren())
 			return;
 		
 		for(GameObject child : m_children)
@@ -79,7 +94,7 @@ public class GameObject
 	{
 		Update(delta);
 
-		if (m_children == null)
+		if (!HasChildren())
 			return;
 		
 		for(GameObject child : m_children)
@@ -90,7 +105,7 @@ public class GameObject
 	{
 		Render(shader, renderingEngine);
 
-		if (m_children == null)
+		if (!HasChildren())
 			return;
 		
 		for(GameObject child : m_children)
@@ -101,7 +116,7 @@ public class GameObject
 	{
 		m_transform.Update();
 
-		if (m_components == null)
+		if (!HasComponents())
 			return;
 		
 		for(GameComponent component : m_components)
@@ -111,7 +126,7 @@ public class GameObject
 	public void Update(float delta)
 	{
 
-		if (m_components == null)
+		if (!HasComponents())
 			return;
 		
 		for(GameComponent component : m_components)
@@ -121,7 +136,7 @@ public class GameObject
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
 
-		if (m_components == null)
+		if (!HasComponents())
 			return;
 		
 		for(GameComponent component : m_components)
@@ -132,7 +147,7 @@ public class GameObject
 	{
 		ArrayList<GameObject> result = new ArrayList<GameObject>();
 
-		if (m_children == null)
+		if (!HasChildren())
 			return result;
 		
 		for(GameObject child : m_children)
@@ -153,12 +168,12 @@ public class GameObject
 		{
 			this.m_engine = engine;
 
-			if (m_components != null)
+			if (HasComponents())
 				for(GameComponent component : m_components)
 					component.AddToEngine(engine);
 
 
-			if (m_children != null)
+			if (HasChildren())
 				for(GameObject child : m_children)
 					child.SetEngine(engine);
 		}
