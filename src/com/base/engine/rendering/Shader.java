@@ -30,10 +30,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.WeakHashMap;
 
 public class Shader
 {
-	private static HashMap<String, ShaderResource> s_loadedShaders = new HashMap<String, ShaderResource>();
+	private static WeakHashMap<String, ShaderResource> s_loadedShaders = new WeakHashMap<String, ShaderResource>();
 
 	private ShaderResource m_resource;
 	private String         m_fileName;
