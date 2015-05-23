@@ -22,7 +22,7 @@ import java.util.HashMap;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 
-public class ShaderResource
+public class ShaderResource extends ReferenceCounter
 {
 	private int                      m_program;
 	private HashMap<String, Integer> m_uniforms;
@@ -33,7 +33,7 @@ public class ShaderResource
 	public ShaderResource()
 	{
 		this.m_program = glCreateProgram();
-		this.m_refCount = 1;
+		AddReference();
 
 		if(m_program == 0)
 		{
@@ -50,17 +50,6 @@ public class ShaderResource
 	protected void finalize()
 	{
 		glDeleteBuffers(m_program);
-	}
-
-	public void AddReference()
-	{
-		m_refCount++;
-	}
-
-	public boolean RemoveReference()
-	{
-		m_refCount--;
-		return m_refCount == 0;
 	}
 
 	public int GetProgram()                       { return m_program; }
