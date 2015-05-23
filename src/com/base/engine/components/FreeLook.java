@@ -79,7 +79,7 @@ public class FreeLook extends GameComponent
 	@Override
 	public void Input(float delta)
 	{
-		Vector2f centerPosition = new Vector2f(Window.GetWidth()/2, Window.GetHeight()/2);
+		Vector2f centerPosition = Window.GetCenterPosition();
 
 		if(Input.GetKey(m_unlockMouseKey))
 		{

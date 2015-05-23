@@ -17,6 +17,7 @@
 package com.base.engine.rendering;
 
 import com.base.engine.core.Vector2f;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -25,12 +26,16 @@ import org.lwjgl.opengl.DisplayMode;
 
 public class Window 
 {
+	
+	private static final Vector2f CENTER_POSITION = new Vector2f(0, 0);
+	
 	public static void CreateWindow(int width, int height, String title)
 	{
 		Display.setTitle(title);
 		try 
 		{
 			Display.setDisplayMode(new DisplayMode(width, height));
+			CENTER_POSITION.Set(GetWidth() / 2, GetHeight() / 2);
 			Display.create();
 			Keyboard.create();
 			Mouse.create();
@@ -77,4 +82,9 @@ public class Window
 	{
 		return new Vector2f(GetWidth()/2, GetHeight()/2);
 	}
+	
+	public static Vector2f GetCenterPosition() {
+		return CENTER_POSITION;
+	}
+	
 }
