@@ -31,14 +31,18 @@ public class GameObject
 
 	public GameObject()
 	{
-		m_children = new ArrayList<GameObject>();
-		m_components = new ArrayList<GameComponent>();
 		m_transform = new Transform();
 		m_engine = null;
 	}
 
 	public GameObject AddChild(GameObject child)
 	{
+		
+		if (m_children == null)
+		{
+			m_children = new ArrayList<GameObject>();
+		}
+		
 		m_children.add(child);
 		child.SetEngine(m_engine);
 		child.GetTransform().SetParent(m_transform);
@@ -48,6 +52,12 @@ public class GameObject
 
 	public GameObject AddComponent(GameComponent component)
 	{
+		
+		if (m_components == null)
+		{
+			m_components = new ArrayList<GameComponent>();
+		}
+		
 		m_components.add(component);
 		component.SetParent(this);
 
@@ -58,6 +68,9 @@ public class GameObject
 	{
 		Input(delta);
 
+		if (m_children == null)
+			return;
+		
 		for(GameObject child : m_children)
 			child.InputAll(delta);
 	}
@@ -66,6 +79,9 @@ public class GameObject
 	{
 		Update(delta);
 
+		if (m_children == null)
+			return;
+		
 		for(GameObject child : m_children)
 			child.UpdateAll(delta);
 	}
@@ -74,6 +90,9 @@ public class GameObject
 	{
 		Render(shader, renderingEngine);
 
+		if (m_children == null)
+			return;
+		
 		for(GameObject child : m_children)
 			child.RenderAll(shader, renderingEngine);
 	}
@@ -82,18 +101,29 @@ public class GameObject
 	{
 		m_transform.Update();
 
+		if (m_components == null)
+			return;
+		
 		for(GameComponent component : m_components)
 			component.Input(delta);
 	}
 
 	public void Update(float delta)
 	{
+
+		if (m_components == null)
+			return;
+		
 		for(GameComponent component : m_components)
 			component.Update(delta);
 	}
 
 	public void Render(Shader shader, RenderingEngine renderingEngine)
 	{
+
+		if (m_components == null)
+			return;
+		
 		for(GameComponent component : m_components)
 			component.Render(shader, renderingEngine);
 	}
@@ -102,6 +132,9 @@ public class GameObject
 	{
 		ArrayList<GameObject> result = new ArrayList<GameObject>();
 
+		if (m_children == null)
+			return result;
+		
 		for(GameObject child : m_children)
 			result.addAll(child.GetAllAttached());
 
@@ -120,11 +153,14 @@ public class GameObject
 		{
 			this.m_engine = engine;
 
-			for(GameComponent component : m_components)
-				component.AddToEngine(engine);
+			if (m_components != null)
+				for(GameComponent component : m_components)
+					component.AddToEngine(engine);
 
-			for(GameObject child : m_children)
-				child.SetEngine(engine);
+
+			if (m_children != null)
+				for(GameObject child : m_children)
+					child.SetEngine(engine);
 		}
 	}
 }
