@@ -35,16 +35,28 @@ public class GameObject
 		m_engine = null;
 	}
 
+	/**
+	 * Check to see if any {@link GameObject} are attached to this {@link GameObject}
+	 * @return true if m_children is not null or empty
+	 */
 	public boolean HasChildren() 
 	{
 		return m_children != null && !m_children.isEmpty();
 	}
 	
+	/**
+	 * Check to see if there are any {@link GameComponent}s attached to this object
+	 * @return true if m_children is not null or empty
+	 */
 	public boolean HasComponents() 
 	{
 		return m_components != null && !m_components.isEmpty();
 	}
 	
+	/**
+	 * Check to see if there is anything attached to this {@link GameObject}
+	 * @return true if m_children is not null or empty
+	 */
 	public boolean HasAttached() 
 	{
 		return HasChildren() || HasComponents();
