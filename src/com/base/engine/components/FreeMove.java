@@ -26,19 +26,26 @@ public class FreeMove extends GameComponent
 	private int   m_backKey;
 	private int   m_leftKey;
 	private int   m_rightKey;
+	private int   m_rotLeftKey;
+	private int   m_rotRightKey;
+	
+	private float   m_sensitivity; // Used for affecting roll speed.
 
-	public FreeMove(float speed)
+	public FreeMove(float speed, float rotationSensitivity)
 	{
-		this(speed, Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D);
+		this(speed, rotationSensitivity, Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D, Input.KEY_Q, Input.KEY_E);
 	}
 
-	public FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey)
+	public FreeMove(float speed, float rotationSensitivity, int forwardKey, int backKey, int leftKey, int rightKey, int rotLeft, int rotRight)
 	{
 		this.m_speed = speed;
 		this.m_forwardKey = forwardKey;
 		this.m_backKey = backKey;
 		this.m_leftKey = leftKey;
 		this.m_rightKey = rightKey;
+		this.m_rotLeftKey = rotLeft;
+		this.m_rotRightKey = rotRight;
+		this.m_sensitivity = rotationSensitivity;
 	}
 
 	@Override
@@ -54,6 +61,13 @@ public class FreeMove extends GameComponent
 			Move(GetTransform().GetRot().GetLeft(), movAmt);
 		if(Input.GetKey(m_rightKey))
 			Move(GetTransform().GetRot().GetRight(), movAmt);
+		
+		if(Input.GetKey(m_rotLeftKey))
+			GetTransform().Rotate(GetTransform().GetRot().GetForward(), (float) Math.toRadians(movAmt * m_sensitivity));
+		if(Input.GetKey(m_rotRightKey))
+			GetTransform().Rotate(GetTransform().GetRot().GetForward(), (float) Math.toRadians(-movAmt * m_sensitivity));
+		
+		
 	}
 
 	private void Move(Vector3f dir, float amt)

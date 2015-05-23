@@ -28,16 +28,18 @@ public class FreeLook extends GameComponent
 	private boolean m_mouseLocked = false;
 	private float   m_sensitivity;
 	private int     m_unlockMouseKey;
+	private boolean m_fixedAxis;
 
-	public FreeLook(float sensitivity)
+	public FreeLook(float sensitivity, boolean fixedAxis)
 	{
-		this(sensitivity, Input.KEY_ESCAPE);
+		this(sensitivity, Input.KEY_ESCAPE, fixedAxis);
 	}
 
-	public FreeLook(float sensitivity, int unlockMouseKey)
+	public FreeLook(float sensitivity, int unlockMouseKey, boolean fixedAxis)
 	{
 		this.m_sensitivity = sensitivity;
 		this.m_unlockMouseKey = unlockMouseKey;
+		this.m_fixedAxis = fixedAxis;
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class FreeLook extends GameComponent
 			boolean rotX = deltaPos.GetY() != 0;
 
 			if(rotY)
-				GetTransform().Rotate(Y_AXIS, (float) Math.toRadians(deltaPos.GetX() * m_sensitivity));
+				GetTransform().Rotate(m_fixedAxis ? Y_AXIS : GetTransform().GetRot().GetUp(), (float) Math.toRadians(deltaPos.GetX() * m_sensitivity));
 			if(rotX)
 				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(-deltaPos.GetY() * m_sensitivity));
 

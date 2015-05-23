@@ -40,14 +40,14 @@ public class TestGame extends Game
 		planeObject.GetTransform().GetPos().Set(0, -1, 5);
 
 		GameObject directionalLightObject = new GameObject();
-		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(0,0,1), 0.4f);
+		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(0,0,1), 0.8f);
 
 		directionalLightObject.AddComponent(directionalLight);
 
 		GameObject pointLightObject = new GameObject();
-		pointLightObject.AddComponent(new PointLight(new Vector3f(0, 1, 0), 0.4f, new Attenuation(0, 0, 1)));
+		pointLightObject.AddComponent(new PointLight(new Vector3f(0, 1, 0), 0.8f, new Attenuation(0, 0, 1)));
 
-		SpotLight spotLight = new SpotLight(new Vector3f(0,1,1), 0.4f,
+		SpotLight spotLight = new SpotLight(new Vector3f(0,1,1), 0.8f,
 				new Attenuation(0,0,0.1f), 0.7f);
 
 		GameObject spotLightObject = new GameObject();
@@ -65,7 +65,7 @@ public class TestGame extends Game
 
 		AddObject(
 				//AddObject(
-				new GameObject().AddComponent(new FreeLook(0.5f)).AddComponent(new FreeMove(10.0f))
+				new GameObject().AddComponent(new FreeLook(0.5f, false)).AddComponent(new FreeMove(10.0f, 4.0f))
 						.AddComponent(new Camera(new Matrix4f().InitPerspective((float) Math.toRadians(70.0f),
 								(float) Window.GetWidth() / (float) Window.GetHeight(), 0.01f, 1000.0f))));
 
