@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 
 public class Texture
 {
+	private static final String ERROR_TEXTURE = "test.png";
 	private static HashMap<String, TextureResource> s_loadedTextures = new HashMap<String, TextureResource>();
 	private TextureResource m_resource;
 	private String          m_fileName;
@@ -80,9 +81,29 @@ public class Texture
 	
 	private static TextureResource LoadTexture(String fileName)
 	{
+		
+		File textureFile = new File("./res/textures/" + fileName);
+		
+		// If the file does not exist, we can't load it.
+		// Instead of a crash, allow the game to show users that
+		// the texture is not found. This will render a checkerboard
+		// pattern onto items by default if no texture is found.
+		// Example of this: Half Life 2
+		if (!textureFile.exists())
+		{
+			// TODO: Is this the best way of handling this?
+			if (!s_loadedTextures.containsKey(ERROR_TEXTURE))
+			{
+				s_loadedTextures.put(ERROR_TEXTURE, LoadTexture(ERROR_TEXTURE));
+			}
+			
+			return s_loadedTextures.get(ERROR_TEXTURE);
+			
+		}
+		
 		try
 		{
-			BufferedImage image = ImageIO.read(new File("./res/textures/" + fileName));
+			BufferedImage image = ImageIO.read(textureFile);
 			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
 			ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
