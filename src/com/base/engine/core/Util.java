@@ -119,7 +119,16 @@ public class Util
 		int[] result = new int[data.length];
 		
 		for(int i = 0; i < data.length; i++)
-			result[i] = data[i];
+		{
+			Integer filtering = data[i];
+			
+			if (filtering == null)
+			{
+				continue;
+			}
+			
+			result[i] = filtering;
+		}
 		
 		return result;
 	}
