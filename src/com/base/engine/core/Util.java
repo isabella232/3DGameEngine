@@ -87,6 +87,12 @@ public class Util
 		return buffer;
 	}
 	
+	/**
+	 * Remove all empty strings from an array.
+	 * 
+	 * @param data - Array of {@link String}s to remove from.
+	 * @return An array containing every non-empty string from <code>data</code>
+	 */
 	public static String[] RemoveEmptyStrings(String[] data)
 	{
 		ArrayList<String> result = new ArrayList<String>();
