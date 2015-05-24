@@ -104,6 +104,16 @@ public class Util
 		return result.toArray(new String[0]);
 	}
 	
+	/**
+	 * Convert an object representation of an Integer array to its primitive form.
+	 * 
+	 * <code>
+	 * Integer[] data = ...;
+	 * int[] primativeData = Util.ToIntArray(data);
+	 * </code>
+	 * @param data - An array of integer objects
+	 * @return An array with primitive representations of <code>data</code>
+	 */
 	public static int[] ToIntArray(Integer[] data)
 	{
 		int[] result = new int[data.length];
