@@ -98,7 +98,7 @@ public class Util
 		ArrayList<String> result = new ArrayList<String>();
 		
 		for(String filtering : data)
-			if(!filtering.isEmpty())
+			if(filtering != null && !filtering.isEmpty())
 				result.add(filtering);
 		
 		return result.toArray(new String[0]);
