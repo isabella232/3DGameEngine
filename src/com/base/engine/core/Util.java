@@ -91,14 +91,11 @@ public class Util
 	{
 		ArrayList<String> result = new ArrayList<String>();
 		
-		for(int i = 0; i < data.length; i++)
-			if(!data[i].equals(""))
-				result.add(data[i]);
+		for(String filtering : data)
+			if(!filtering.isEmpty())
+				result.add(filtering);
 		
-		String[] res = new String[result.size()];
-		result.toArray(res);
-		
-		return res;
+		return result.toArray(new String[0]);
 	}
 	
 	public static int[] ToIntArray(Integer[] data)
