@@ -93,7 +93,7 @@ public class Util
 	 * @param data - Array of {@link String}s to remove from.
 	 * @return An array containing every non-empty string from <code>data</code>
 	 */
-	public static String[] RemoveEmptyStrings(String[] data)
+	public static String[] RemoveEmptyStrings(String ... data)
 	{
 		ArrayList<String> result = new ArrayList<String>();
 		
@@ -114,7 +114,7 @@ public class Util
 	 * @param data - An array of integer objects
 	 * @return An array with primitive representations of <code>data</code>
 	 */
-	public static int[] ToIntArray(Integer[] data)
+	public static int[] ToIntArray(Integer ... data)
 	{
 		int[] result = new int[data.length];
 		
