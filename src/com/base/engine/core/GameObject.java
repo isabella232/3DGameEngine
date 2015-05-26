@@ -47,7 +47,6 @@ public class GameObject
 	 */
 	public GameObject(String objectId)
 	{
-		m_transform = new Transform();
 		m_engine = null;
 		this.objectId = objectId;
 	}
@@ -89,7 +88,7 @@ public class GameObject
 		
 		m_children.add(child);
 		child.SetEngine(m_engine);
-		child.GetTransform().SetParent(m_transform);
+		child.GetTransform().SetParent(GetTransform());
 		
 		return this;
 	}
@@ -166,7 +165,8 @@ public class GameObject
 
 	public void Input(float delta)
 	{
-		m_transform.Update();
+		if (HasTransform())
+			m_transform.Update();
 
 		if (!HasComponents())
 			return;
@@ -209,8 +209,16 @@ public class GameObject
 		return result;
 	}
 
+	public boolean HasTransform()
+	{
+		return m_transform != null;
+	}
+	
 	public Transform GetTransform()
 	{
+		if (!HasTransform()) {
+			m_transform = new Transform();
+		}
 		return m_transform;
 	}
 	
