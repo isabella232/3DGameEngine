@@ -16,12 +16,10 @@
 
 package com.base.engine.core;
 
-public class Time 
-{
+public class Time {
 	private static final long SECOND = 1000000000L;
 
-	public static double GetTime()
-	{
-		return (double)System.nanoTime()/(double)SECOND;
+	public static double GetTime() {
+		return (double) System.nanoTime() / (double) Time.SECOND;
 	}
 }

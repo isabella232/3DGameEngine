@@ -16,33 +16,44 @@
 
 package com.base.engine.rendering.meshLoading;
 
-public class OBJIndex
-{
+public class OBJIndex {
 	private int m_vertexIndex;
 	private int m_texCoordIndex;
 	private int m_normalIndex;
 
-	public int GetVertexIndex()   { return m_vertexIndex; }
-	public int GetTexCoordIndex() { return m_texCoordIndex; }
-	public int GetNormalIndex()   { return m_normalIndex; }
+	public int GetVertexIndex() {
+		return m_vertexIndex;
+	}
 
-	public void SetVertexIndex(int val)   { m_vertexIndex = val; }
-	public void SetTexCoordIndex(int val) { m_texCoordIndex = val; }
-	public void SetNormalIndex(int val)   { m_normalIndex = val; }
+	public int GetTexCoordIndex() {
+		return m_texCoordIndex;
+	}
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		OBJIndex index = (OBJIndex)obj;
+	public int GetNormalIndex() {
+		return m_normalIndex;
+	}
 
-		return m_vertexIndex == index.m_vertexIndex
-				&& m_texCoordIndex == index.m_texCoordIndex
-				&& m_normalIndex == index.m_normalIndex;
+	public void SetVertexIndex(final int val) {
+		m_vertexIndex = val;
+	}
+
+	public void SetTexCoordIndex(final int val) {
+		m_texCoordIndex = val;
+	}
+
+	public void SetNormalIndex(final int val) {
+		m_normalIndex = val;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public boolean equals(final Object obj) {
+		final OBJIndex index = (OBJIndex) obj;
+
+		return m_vertexIndex == index.m_vertexIndex && m_texCoordIndex == index.m_texCoordIndex && m_normalIndex == index.m_normalIndex;
+	}
+
+	@Override
+	public int hashCode() {
 		final int BASE = 17;
 		final int MULTIPLIER = 31;
 

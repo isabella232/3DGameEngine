@@ -18,11 +18,9 @@ package com.base.game;
 
 import com.base.engine.core.CoreEngine;
 
-public class Main
-{
-	public static void main(String[] args)
-	{
-		CoreEngine engine = new CoreEngine(800, 600, 60, new TestGame());
+public class Main {
+	public static void main(final String[] args) {
+		final CoreEngine engine = new CoreEngine(800, 600, 60, new TestGame());
 		engine.CreateWindow("3D Game Engine");
 		engine.Start();
 	}

@@ -16,24 +16,23 @@
 
 package com.base.engine.rendering.resourceManagement;
 
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 
-public class TextureResource extends ReferenceCounter
-{
-	private int m_id;
+public class TextureResource extends ReferenceCounter {
+	private final int m_id;
 
-	public TextureResource()
-	{
-		this.m_id = glGenTextures();
+	public TextureResource() {
+		m_id = GL11.glGenTextures();
 		AddReference();
 	}
 
 	@Override
-	protected void finalize()
-	{
-		glDeleteBuffers(m_id);
+	protected void finalize() {
+		GL15.glDeleteBuffers(m_id);
 	}
 
-	public int GetId() { return m_id; }
+	public int GetId() {
+		return m_id;
+	}
 }

@@ -16,136 +16,119 @@
 
 package com.base.engine.rendering;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
-import com.base.engine.core.*;
-import com.base.engine.rendering.resourceManagement.TextureResource;
-
 import javax.imageio.ImageIO;
 
-public class Texture
-{
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
+import com.base.engine.core.Util;
+import com.base.engine.rendering.resourceManagement.TextureResource;
+
+public class Texture {
 	private static final String ERROR_TEXTURE = "test.png";
 	private static HashMap<String, TextureResource> s_loadedTextures = new HashMap<String, TextureResource>();
 	private TextureResource m_resource;
-	private String          m_fileName;
-	
-	public Texture(String fileName)
-	{
-		this.m_fileName = fileName;
-		TextureResource oldResource = s_loadedTextures.get(fileName);
+	private final String m_fileName;
 
-		if(oldResource != null)
-		{
+	public Texture(final String fileName) {
+		m_fileName = fileName;
+		final TextureResource oldResource = Texture.s_loadedTextures.get(fileName);
+
+		if (oldResource != null) {
 			m_resource = oldResource;
 			m_resource.AddReference();
-		}
-		else
-		{
-			m_resource = LoadTexture(fileName);
-			s_loadedTextures.put(fileName, m_resource);
+		} else {
+			m_resource = Texture.LoadTexture(fileName);
+			Texture.s_loadedTextures.put(fileName, m_resource);
 		}
 	}
 
 	@Override
-	protected void finalize()
-	{
-		if(m_resource.RemoveReference() && !m_fileName.isEmpty())
-		{
-			s_loadedTextures.remove(m_fileName);
+	protected void finalize() {
+		if (m_resource.RemoveReference() && !m_fileName.isEmpty()) {
+			Texture.s_loadedTextures.remove(m_fileName);
 		}
 	}
 
-	public void Bind()
-	{
+	public void Bind() {
 		Bind(0);
 	}
 
-	public void Bind(int samplerSlot)
-	{
-		assert(samplerSlot >= 0 && samplerSlot <= 31);
-		glActiveTexture(GL_TEXTURE0 + samplerSlot);
-		glBindTexture(GL_TEXTURE_2D, m_resource.GetId());
+	public void Bind(final int samplerSlot) {
+		assert samplerSlot >= 0 && samplerSlot <= 31;
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + samplerSlot);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, m_resource.GetId());
 	}
-	
-	public int GetID()
-	{
+
+	public int GetID() {
 		return m_resource.GetId();
 	}
-	
-	private static TextureResource LoadTexture(String fileName)
-	{
-		
-		File textureFile = new File("./res/textures/" + fileName);
-		
+
+	private static TextureResource LoadTexture(final String fileName) {
+
+		final File textureFile = new File("./res/textures/" + fileName);
+
 		// If the file does not exist, we can't load it.
 		// Instead of a crash, allow the game to show users that
 		// the texture is not found. This will render a checkerboard
 		// pattern onto items by default if no texture is found.
 		// Example of this: Half Life 2
-		if (!textureFile.exists())
-		{
+		if (!textureFile.exists()) {
 			// TODO: Is this the best way of handling this?
-			if (!s_loadedTextures.containsKey(ERROR_TEXTURE))
-			{
-				s_loadedTextures.put(ERROR_TEXTURE, LoadTexture(ERROR_TEXTURE));
+			if (!Texture.s_loadedTextures.containsKey(Texture.ERROR_TEXTURE)) {
+				Texture.s_loadedTextures.put(Texture.ERROR_TEXTURE, Texture.LoadTexture(Texture.ERROR_TEXTURE));
 			}
-			
-			return s_loadedTextures.get(ERROR_TEXTURE);
-			
+
+			return Texture.s_loadedTextures.get(Texture.ERROR_TEXTURE);
+
 		}
-		
-		try
-		{
-			BufferedImage image = ImageIO.read(textureFile);
-			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
-			ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
-			boolean hasAlpha = image.getColorModel().hasAlpha();
+		try {
+			final BufferedImage image = ImageIO.read(textureFile);
+			final int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
-			for(int y = 0; y < image.getHeight(); y++)
-			{
-				for(int x = 0; x < image.getWidth(); x++)
-				{
-					int pixel = pixels[y * image.getWidth() + x];
+			final ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
+			final boolean hasAlpha = image.getColorModel().hasAlpha();
 
-					buffer.put((byte)((pixel >> 16) & 0xFF));
-					buffer.put((byte)((pixel >> 8) & 0xFF));
-					buffer.put((byte)((pixel) & 0xFF));
-					if(hasAlpha)
-						buffer.put((byte)((pixel >> 24) & 0xFF));
-					else
-						buffer.put((byte)(0xFF));
+			for (int y = 0; y < image.getHeight(); y++) {
+				for (int x = 0; x < image.getWidth(); x++) {
+					final int pixel = pixels[y * image.getWidth() + x];
+
+					buffer.put((byte) (pixel >> 16 & 0xFF));
+					buffer.put((byte) (pixel >> 8 & 0xFF));
+					buffer.put((byte) (pixel & 0xFF));
+					if (hasAlpha) {
+						buffer.put((byte) (pixel >> 24 & 0xFF));
+					} else {
+						buffer.put((byte) 0xFF);
+					}
 				}
 			}
 
 			buffer.flip();
 
-			TextureResource resource = new TextureResource();
-			glBindTexture(GL_TEXTURE_2D, resource.GetId());
+			final TextureResource resource = new TextureResource();
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.GetId());
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
 
 			return resource;
-		}
-		catch(Exception e)
-		{
+		} catch (final Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+
 		return null;
 	}
 }

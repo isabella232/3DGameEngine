@@ -16,24 +16,21 @@
 
 package com.base.engine.core.math;
 
-
 /**
- * 
- * Basically a vertex. 
- * A point in 2d or 3d space.
+ *
+ * Basically a vertex. A point in 2d or 3d space.
  *
  */
-public class Vertex
-{
+public class Vertex {
 	public static final int SIZE = 11;
-	
+
 	/**
-	 * The position of the vertex 
+	 * The position of the vertex
 	 */
 	private Vector3f m_pos;
 	/**
-	 * Location on a texture to pull data from to map to this point.
-	 * Used for wrapping textures over objects  
+	 * Location on a texture to pull data from to map to this point. Used for
+	 * wrapping textures over objects
 	 */
 	private Vector2f m_texCoord;
 	/**
@@ -41,60 +38,79 @@ public class Vertex
 	 */
 	private Vector3f m_normal;
 	/**
-	 * A Tangent vector is typically regarded as one vector that exists within the surface's plane or which lies tangent to a reference point on a curved surface.
-	 * Taken from: http://gamedev.stackexchange.com/a/51402
+	 * A Tangent vector is typically regarded as one vector that exists within
+	 * the surface's plane or which lies tangent to a reference point on a
+	 * curved surface. Taken from: http://gamedev.stackexchange.com/a/51402
 	 */
 	private Vector3f m_tangent;
-	
+
 	/**
-	 * Initialize a new {@link Vertex} 
-	 * @param pos - The position of the vertex
+	 * Initialize a new {@link Vertex}
+	 * 
+	 * @param pos
+	 *            - The position of the vertex
 	 */
-	public Vertex(Vector3f pos)
-	{
-		this(pos, new Vector2f(0,0));
+	public Vertex(final Vector3f pos) {
+		this(pos, new Vector2f(0, 0));
 	}
-	
+
 	/**
 	 * Initialize a new {@link Vertex} with a texture coordinate
-	 * @param pos - The position of the vertex
-	 * @param texCoord - Location on a texture to pull data from to map to this point. Used for wrapping textures over objects  
-	 */
-	public Vertex(Vector3f pos, Vector2f texCoord)
-	{
-		this(pos, texCoord, new Vector3f(0,0,0));
-	}
-	
-	/**
-	 * Initialize a new {@link Vertex} with a texture coordinate and a normalization
-	 * @param pos - The position of the vertex
-	 * @param texCoord - Location on a texture to pull data from to map to this point. Used for wrapping textures over objects  
-	 * @param normal - The direction of the vertex
-	 */
-	public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal)
-	{
-		this(pos, texCoord, normal, new Vector3f(0,0,0));
-	}
-	
-	/**
 	 * 
-	 * Initialize a new {@link Vertex} with a texture coordinate, normalization, and a tangent
-	 * @param pos - The position of the vertex
-	 * @param texCoord - Location on a texture to pull data from to map to this point. Used for wrapping textures over objects  
-	 * @param normal - The direction of the vertex
-	 * @param tangent - Vector that exists within the surface's plane or which lies tangent to a reference point on a curved surface. 
+	 * @param pos
+	 *            - The position of the vertex
+	 * @param texCoord
+	 *            - Location on a texture to pull data from to map to this
+	 *            point. Used for wrapping textures over objects
 	 */
-	public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal, Vector3f tangent)
-	{
-		this.m_pos = pos;
-		this.m_texCoord = texCoord;
-		this.m_normal = normal;
-		this.m_tangent = tangent;
+	public Vertex(final Vector3f pos, final Vector2f texCoord) {
+		this(pos, texCoord, new Vector3f(0, 0, 0));
+	}
+
+	/**
+	 * Initialize a new {@link Vertex} with a texture coordinate and a
+	 * normalization
+	 * 
+	 * @param pos
+	 *            - The position of the vertex
+	 * @param texCoord
+	 *            - Location on a texture to pull data from to map to this
+	 *            point. Used for wrapping textures over objects
+	 * @param normal
+	 *            - The direction of the vertex
+	 */
+	public Vertex(final Vector3f pos, final Vector2f texCoord, final Vector3f normal) {
+		this(pos, texCoord, normal, new Vector3f(0, 0, 0));
+	}
+
+	/**
+	 *
+	 * Initialize a new {@link Vertex} with a texture coordinate, normalization,
+	 * and a tangent
+	 * 
+	 * @param pos
+	 *            - The position of the vertex
+	 * @param texCoord
+	 *            - Location on a texture to pull data from to map to this
+	 *            point. Used for wrapping textures over objects
+	 * @param normal
+	 *            - The direction of the vertex
+	 * @param tangent
+	 *            - Vector that exists within the surface's plane or which lies
+	 *            tangent to a reference point on a curved surface.
+	 */
+	public Vertex(final Vector3f pos, final Vector2f texCoord, final Vector3f normal, final Vector3f tangent) {
+		m_pos = pos;
+		m_texCoord = texCoord;
+		m_normal = normal;
+		m_tangent = tangent;
 	}
 
 	/**
 	 * Get the tangent
-	 * @return Vector that exists within the surface's plane or which lies tangent to a reference point on a curved surface.
+	 * 
+	 * @return Vector that exists within the surface's plane or which lies
+	 *         tangent to a reference point on a curved surface.
 	 */
 	public Vector3f GetTangent() {
 		return m_tangent;
@@ -102,63 +118,71 @@ public class Vertex
 
 	/**
 	 * Set the tangent
-	 * @param tangent - Vector that exists within the surface's plane or which lies tangent to a reference point on a curved surface.
+	 * 
+	 * @param tangent
+	 *            - Vector that exists within the surface's plane or which lies
+	 *            tangent to a reference point on a curved surface.
 	 */
-	public void SetTangent(Vector3f tangent) {
-		this.m_tangent = tangent;
+	public void SetTangent(final Vector3f tangent) {
+		m_tangent = tangent;
 	}
 
 	/**
-	 * Get the position 
+	 * Get the position
+	 * 
 	 * @return The position of the vertex
 	 */
-	public Vector3f GetPos()
-	{
+	public Vector3f GetPos() {
 		return m_pos;
 	}
 
 	/**
 	 * Set the position
-	 * @param pos - The position of the vertex
+	 * 
+	 * @param pos
+	 *            - The position of the vertex
 	 */
-	public void SetPos(Vector3f pos)
-	{
-		this.m_pos = pos;
+	public void SetPos(final Vector3f pos) {
+		m_pos = pos;
 	}
 
 	/**
 	 * Get the texture coordinate
-	 * @return Location on a texture to pull data from to map to this point. Used for wrapping textures over objects
+	 * 
+	 * @return Location on a texture to pull data from to map to this point.
+	 *         Used for wrapping textures over objects
 	 */
-	public Vector2f GetTexCoord()
-	{
+	public Vector2f GetTexCoord() {
 		return m_texCoord;
 	}
 
 	/**
 	 * Set the texture coordinate
-	 * @param texCoord - Location on a texture to pull data from to map to this point. Used for wrapping textures over objects
+	 * 
+	 * @param texCoord
+	 *            - Location on a texture to pull data from to map to this
+	 *            point. Used for wrapping textures over objects
 	 */
-	public void SetTexCoord(Vector2f texCoord)
-	{
-		this.m_texCoord = texCoord;
+	public void SetTexCoord(final Vector2f texCoord) {
+		m_texCoord = texCoord;
 	}
 
 	/**
-	 * Get the normal 
+	 * Get the normal
+	 * 
 	 * @return The direction of the vertex
 	 */
-	public Vector3f GetNormal()
-	{
+	public Vector3f GetNormal() {
 		return m_normal;
 	}
 
 	/**
 	 * Get the normal
-	 * @param normal - The direction of the vertex
+	 * 
+	 * @param normal
+	 *            - The direction of the vertex
 	 */
-	public void SetNormal(Vector3f normal)
-	{
-		this.m_normal = normal;
+	public void SetNormal(final Vector3f normal) {
+		m_normal = normal;
 	}
 }

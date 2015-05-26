@@ -16,133 +16,118 @@
 
 package com.base.engine.core.math;
 
-public class Vector2f 
-{
+public class Vector2f {
 	private float m_x;
 	private float m_y;
-	
-	public Vector2f(float x, float y)
-	{
-		this.m_x = x;
-		this.m_y = y;
+
+	public Vector2f(final float x, final float y) {
+		m_x = x;
+		m_y = y;
 	}
 
-	public float Length()
-	{
-		return (float)Math.sqrt(m_x * m_x + m_y * m_y);
+	public float Length() {
+		return (float) Math.sqrt(m_x * m_x + m_y * m_y);
 	}
 
-	public float Max()
-	{
+	public float Max() {
 		return Math.max(m_x, m_y);
 	}
 
-	public float Dot(Vector2f r)
-	{
+	public float Dot(final Vector2f r) {
 		return m_x * r.GetX() + m_y * r.GetY();
 	}
-	
-	public Vector2f Normalized()
-	{
-		float length = Length();
-		
+
+	public Vector2f Normalized() {
+		final float length = Length();
+
 		return new Vector2f(m_x / length, m_y / length);
 	}
 
-	public float Cross(Vector2f r)
-	{
+	public float Cross(final Vector2f r) {
 		return m_x * r.GetY() - m_y * r.GetX();
 	}
 
-	public Vector2f Lerp(Vector2f dest, float lerpFactor)
-	{
+	public Vector2f Lerp(final Vector2f dest, final float lerpFactor) {
 		return dest.Sub(this).Mul(lerpFactor).Add(this);
 	}
 
-	public Vector2f Rotate(float angle)
-	{
-		double rad = Math.toRadians(angle);
-		double cos = Math.cos(rad);
-		double sin = Math.sin(rad);
-		
-		return new Vector2f((float)(m_x * cos - m_y * sin),(float)(m_x * sin + m_y * cos));
+	public Vector2f Rotate(final float angle) {
+		final double rad = Math.toRadians(angle);
+		final double cos = Math.cos(rad);
+		final double sin = Math.sin(rad);
+
+		return new Vector2f((float) (m_x * cos - m_y * sin), (float) (m_x * sin + m_y * cos));
 	}
-	
-	public Vector2f Add(Vector2f r)
-	{
+
+	public Vector2f Add(final Vector2f r) {
 		return new Vector2f(m_x + r.GetX(), m_y + r.GetY());
 	}
-	
-	public Vector2f Add(float r)
-	{
+
+	public Vector2f Add(final float r) {
 		return new Vector2f(m_x + r, m_y + r);
 	}
-	
-	public Vector2f Sub(Vector2f r)
-	{
+
+	public Vector2f Sub(final Vector2f r) {
 		return new Vector2f(m_x - r.GetX(), m_y - r.GetY());
 	}
-	
-	public Vector2f Sub(float r)
-	{
+
+	public Vector2f Sub(final float r) {
 		return new Vector2f(m_x - r, m_y - r);
 	}
-	
-	public Vector2f Mul(Vector2f r)
-	{
+
+	public Vector2f Mul(final Vector2f r) {
 		return new Vector2f(m_x * r.GetX(), m_y * r.GetY());
 	}
-	
-	public Vector2f Mul(float r)
-	{
+
+	public Vector2f Mul(final float r) {
 		return new Vector2f(m_x * r, m_y * r);
 	}
-	
-	public Vector2f Div(Vector2f r)
-	{
+
+	public Vector2f Div(final Vector2f r) {
 		return new Vector2f(m_x / r.GetX(), m_y / r.GetY());
 	}
-	
-	public Vector2f Div(float r)
-	{
+
+	public Vector2f Div(final float r) {
 		return new Vector2f(m_x / r, m_y / r);
 	}
-	
-	public Vector2f Abs()
-	{
+
+	public Vector2f Abs() {
 		return new Vector2f(Math.abs(m_x), Math.abs(m_y));
 	}
-	
-	public String toString()
-	{
+
+	@Override
+	public String toString() {
 		return "(" + m_x + " " + m_y + ")";
 	}
 
-	public Vector2f Set(float x, float y) { this.m_x = x; this.m_y = y; return this; }
-	public Vector2f Set(Vector2f r) { Set(r.GetX(), r.GetY()); return this; }
+	public Vector2f Set(final float x, final float y) {
+		m_x = x;
+		m_y = y;
+		return this;
+	}
 
-	public float GetX()
-	{
+	public Vector2f Set(final Vector2f r) {
+		Set(r.GetX(), r.GetY());
+		return this;
+	}
+
+	public float GetX() {
 		return m_x;
 	}
 
-	public void SetX(float x)
-	{
-		this.m_x = x;
+	public void SetX(final float x) {
+		m_x = x;
 	}
 
-	public float GetY()
-	{
+	public float GetY() {
 		return m_y;
 	}
 
-	public void SetY(float y)
-	{
-		this.m_y = y;
+	public void SetY(final float y) {
+		m_y = y;
 	}
 
-	public boolean equals(Vector2f r)
-	{
+	public boolean equals(final Vector2f r) {
 		return m_x == r.GetX() && m_y == r.GetY();
 	}
 }

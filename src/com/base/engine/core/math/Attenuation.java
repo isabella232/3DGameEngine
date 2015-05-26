@@ -16,25 +16,20 @@
 
 package com.base.engine.core.math;
 
-
-public class Attenuation extends Vector3f
-{
-	public Attenuation(float constant, float linear, float exponent) {
+public class Attenuation extends Vector3f {
+	public Attenuation(final float constant, final float linear, final float exponent) {
 		super(constant, linear, exponent);
 	}
 
-	public float GetConstant()
-	{
+	public float GetConstant() {
 		return GetX();
 	}
 
-	public float GetLinear()
-	{
+	public float GetLinear() {
 		return GetY();
 	}
 
-	public float GetExponent()
-	{
+	public float GetExponent() {
 		return GetZ();
 	}
 }

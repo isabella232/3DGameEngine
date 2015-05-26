@@ -16,30 +16,35 @@
 
 package com.base.engine.rendering.resourceManagement;
 
-import static org.lwjgl.opengl.GL15.*;
+import org.lwjgl.opengl.GL15;
 
-public class MeshResource extends ReferenceCounter
-{
-	private int m_vbo;
-	private int m_ibo;
-	private int m_size;
+public class MeshResource extends ReferenceCounter {
+	private final int m_vbo;
+	private final int m_ibo;
+	private final int m_size;
 
-	public MeshResource(int size)
-	{
-		m_vbo = glGenBuffers();
-		m_ibo = glGenBuffers();
-		this.m_size = size;
+	public MeshResource(final int size) {
+		m_vbo = GL15.glGenBuffers();
+		m_ibo = GL15.glGenBuffers();
+		m_size = size;
 		AddReference();
 	}
 
 	@Override
-	protected void finalize()
-	{
-		glDeleteBuffers(m_vbo);
-		glDeleteBuffers(m_ibo);
+	protected void finalize() {
+		GL15.glDeleteBuffers(m_vbo);
+		GL15.glDeleteBuffers(m_ibo);
 	}
 
-	public int GetVbo()  { return m_vbo; }
-	public int GetIbo()  { return m_ibo; }
-	public int GetSize() { return m_size; }
+	public int GetVbo() {
+		return m_vbo;
+	}
+
+	public int GetIbo() {
+		return m_ibo;
+	}
+
+	public int GetSize() {
+		return m_size;
+	}
 }

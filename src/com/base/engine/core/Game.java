@@ -18,39 +18,37 @@ package com.base.engine.core;
 
 import com.base.engine.rendering.RenderingEngine;
 
-public abstract class Game
-{
+public abstract class Game {
 	private GameObject m_root;
 
-	public void Init() {}
+	public void Init() {
+	}
 
-	public void Input(float delta)
-	{
+	public void Input(final float delta) {
 		GetRootObject().InputAll(delta);
 	}
 
-	public void Update(float delta)
-	{
+	public void Update(final float delta) {
 		GetRootObject().UpdateAll(delta);
 	}
 
-	public void Render(RenderingEngine renderingEngine)
-	{
+	public void Render(final RenderingEngine renderingEngine) {
 		renderingEngine.Render(GetRootObject());
 	}
 
-	public void AddObject(GameObject object)
-	{
+	public void AddObject(final GameObject object) {
 		GetRootObject().AddChild(object);
 	}
 
-	private GameObject GetRootObject()
-	{
-		if(m_root == null)
+	private GameObject GetRootObject() {
+		if (m_root == null) {
 			m_root = new GameObject();
+		}
 
 		return m_root;
 	}
 
-	public void SetEngine(CoreEngine engine) { GetRootObject().SetEngine(engine); }
+	public void SetEngine(final CoreEngine engine) {
+		GetRootObject().SetEngine(engine);
+	}
 }
