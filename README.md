@@ -5,6 +5,10 @@ thebennybox 3D Game Engine
 
 Tutorial found here: https://www.youtube.com/playlist?list=PLEETnX-uPtBXP_B2yupUKlflXBznWIlL5
 
+##Coding Style##
+Make sure to use the formatting preferences from tools/formatting/ in your IDE.
+Run a cleanup on your code before every commit.
+
 ##Build Dependencies##
 - [JAVA](https://www.java.com/en/download/)
 - BUILD TOOLCHAIN (Can be any one of the following, doesn't need to be all of them)
