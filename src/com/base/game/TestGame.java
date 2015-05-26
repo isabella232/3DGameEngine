@@ -18,6 +18,10 @@ package com.base.game;
 
 import com.base.engine.components.*;
 import com.base.engine.core.*;
+import com.base.engine.core.math.Attenuation;
+import com.base.engine.core.math.Matrix4f;
+import com.base.engine.core.math.Quaternion;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.*;
 
 public class TestGame extends Game

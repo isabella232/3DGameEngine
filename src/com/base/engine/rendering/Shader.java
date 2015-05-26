@@ -21,6 +21,8 @@ import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.*;
+import com.base.engine.core.math.Matrix4f;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.ShaderResource;
 
 import static org.lwjgl.opengl.GL20.*;

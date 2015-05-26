@@ -19,6 +19,8 @@ package com.base.engine.core;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.base.engine.core.math.Vector2f;
+
 public class Input 
 {
 	public static final int NUM_KEYCODES = 256;

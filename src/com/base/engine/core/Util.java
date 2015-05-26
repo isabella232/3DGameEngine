@@ -21,7 +21,9 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
-import com.base.engine.rendering.Vertex;
+import com.base.engine.core.math.Matrix4f;
+import com.base.engine.core.math.Vertex;
+
 import org.lwjgl.BufferUtils;
 
 public class Util

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.base.engine.core;
+package com.base.engine.core.math;
 
 public class Matrix4f
 {

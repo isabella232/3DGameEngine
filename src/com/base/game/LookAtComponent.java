@@ -18,6 +18,8 @@ package com.base.game;
 
 import com.base.engine.components.GameComponent;
 import com.base.engine.core.*;
+import com.base.engine.core.math.Quaternion;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 

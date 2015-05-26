@@ -16,7 +16,7 @@
 
 package com.base.engine.rendering;
 
-import com.base.engine.core.Vector2f;
+import com.base.engine.core.math.Vector2f;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;

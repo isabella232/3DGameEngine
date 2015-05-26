@@ -17,8 +17,8 @@
 package com.base.engine.components;
 
 import com.base.engine.core.Input;
-import com.base.engine.core.Vector2f;
-import com.base.engine.core.Vector3f;
+import com.base.engine.core.math.Vector2f;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.Window;
 
 public class FreeLook extends GameComponent

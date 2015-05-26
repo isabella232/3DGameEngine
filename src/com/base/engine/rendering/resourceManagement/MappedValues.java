@@ -16,7 +16,7 @@
 
 package com.base.engine.rendering.resourceManagement;
 
-import com.base.engine.core.Vector3f;
+import com.base.engine.core.math.Vector3f;
 
 import java.util.HashMap;
 

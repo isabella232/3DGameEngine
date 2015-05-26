@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.base.engine.rendering;
+package com.base.engine.core.math;
 
-import com.base.engine.core.Vector3f;
 
 public class Attenuation extends Vector3f
 {

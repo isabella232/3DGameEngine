@@ -16,7 +16,7 @@
 
 package com.base.engine.components;
 
-import com.base.engine.core.Vector3f;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.Shader;
 
 public class DirectionalLight extends BaseLight

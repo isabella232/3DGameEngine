@@ -20,7 +20,7 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
 import com.base.engine.core.GameObject;
 import com.base.engine.core.Transform;
-import com.base.engine.core.Vector3f;
+import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
 
 import java.util.ArrayList;

@@ -16,6 +16,10 @@
 
 package com.base.engine.core;
 
+import com.base.engine.core.math.Matrix4f;
+import com.base.engine.core.math.Quaternion;
+import com.base.engine.core.math.Vector3f;
+
 public class Transform
 {
 	private Transform  m_parent;
