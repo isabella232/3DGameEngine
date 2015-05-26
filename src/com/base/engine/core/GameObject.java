@@ -93,6 +93,29 @@ public class GameObject
 		
 		return this;
 	}
+	
+	/**
+	 * Find a child {@link GameObject} by it's object id.
+	 * @param objectId - The object ID of the targeted game object.
+	 * @return <code>null</code> if no object was found
+	 */
+	public GameObject GetChild(String objectId)
+	{
+		if (!HasChildren())
+		{
+			return null;
+		}
+		
+		for (GameObject object : m_children)
+		{
+			if (objectId.equals(object.GetObjectId()))
+			{
+				return object;
+			}
+		}
+		
+		return null;
+	}
 
 	public GameObject AddComponent(GameComponent component)
 	{
