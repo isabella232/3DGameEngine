@@ -21,6 +21,7 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class GameObject
 {
@@ -28,13 +29,29 @@ public class GameObject
 	private ArrayList<GameComponent> m_components;
 	private Transform m_transform;
 	private CoreEngine m_engine;
+	private final String objectId;
 
+	/**
+	 * Create a {@link GameObject} with an object id (name) generated
+	 * by {@link UUID}.randomUUID().toString();
+	 * 
+	 */
 	public GameObject()
+	{
+		this(UUID.randomUUID().toString());
+	}
+
+	/**
+	 * Create a {@link GameObject} and supply an object id.
+	 * @param objectId - The name/object id that can be used to identify this object.
+	 */
+	public GameObject(String objectId)
 	{
 		m_transform = new Transform();
 		m_engine = null;
+		this.objectId = objectId;
 	}
-
+	
 	/**
 	 * Check to see if any {@link GameObject} are attached to this {@link GameObject}
 	 * @return true if m_children is not null or empty
@@ -172,6 +189,14 @@ public class GameObject
 	public Transform GetTransform()
 	{
 		return m_transform;
+	}
+	
+	/**
+	 * Get the name of the object
+	 * @return Either a UUID or a object id set by the constructor
+	 */
+	public String GetObjectId() {
+		return objectId;
 	}
 
 	public void SetEngine(CoreEngine engine)
