@@ -12,13 +12,13 @@ public abstract class ReferenceCounter {
 	 * The number of open references currently held to the resource this object
 	 * represents
 	 */
-	private int m_refCount = 0;
+	private int refCount = 0;
 
 	/**
 	 * Add a reference to the current count
 	 */
-	public void AddReference() {
-		m_refCount++;
+	public void addReference() {
+		refCount++;
 	}
 
 	/**
@@ -26,9 +26,9 @@ public abstract class ReferenceCounter {
 	 * 
 	 * @return true if there are no more references
 	 */
-	public boolean RemoveReference() {
-		m_refCount--;
-		return m_refCount <= 0; // Handle a less than zero case to make sure
+	public boolean removeReference() {
+		refCount--;
+		return refCount <= 0; // Handle a less than zero case to make sure
 								// that bad code doesn't cause memory leaks
 	}
 

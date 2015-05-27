@@ -23,43 +23,43 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 public class ShaderResource extends ReferenceCounter {
-	private final int m_program;
-	private final HashMap<String, Integer> m_uniforms;
-	private final ArrayList<String> m_uniformNames;
-	private final ArrayList<String> m_uniformTypes;
+	private final int program;
+	private final HashMap<String, Integer> uniforms;
+	private final ArrayList<String> uniformNames;
+	private final ArrayList<String> uniformTypes;
 
 	public ShaderResource() {
-		m_program = GL20.glCreateProgram();
-		AddReference();
+		program = GL20.glCreateProgram();
+		addReference();
 
-		if (m_program == 0) {
+		if (program == 0) {
 			System.err.println("Shader creation failed: Could not find valid memory location in constructor");
 			System.exit(1);
 		}
 
-		m_uniforms = new HashMap<String, Integer>();
-		m_uniformNames = new ArrayList<String>();
-		m_uniformTypes = new ArrayList<String>();
+		uniforms = new HashMap<String, Integer>();
+		uniformNames = new ArrayList<String>();
+		uniformTypes = new ArrayList<String>();
 	}
 
 	@Override
 	protected void finalize() {
-		GL15.glDeleteBuffers(m_program);
+		GL15.glDeleteBuffers(program);
 	}
 
-	public int GetProgram() {
-		return m_program;
+	public int getProgram() {
+		return program;
 	}
 
-	public HashMap<String, Integer> GetUniforms() {
-		return m_uniforms;
+	public HashMap<String, Integer> getUniforms() {
+		return uniforms;
 	}
 
-	public ArrayList<String> GetUniformNames() {
-		return m_uniformNames;
+	public ArrayList<String> getUniformNames() { 
+		return uniformNames;
 	}
 
-	public ArrayList<String> GetUniformTypes() {
-		return m_uniformTypes;
+	public ArrayList<String> getUniformTypes() {
+		return uniformTypes;
 	}
 }

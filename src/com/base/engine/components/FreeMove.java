@@ -20,15 +20,15 @@ import com.base.engine.core.Input;
 import com.base.engine.core.math.Vector3f;
 
 public class FreeMove extends GameComponent {
-	private final float m_speed;
-	private final int m_forwardKey;
-	private final int m_backKey;
-	private final int m_leftKey;
-	private final int m_rightKey;
-	private final int m_rotLeftKey;
-	private final int m_rotRightKey;
+	private final float speed;
+	private final int forwardKey;
+	private final int backKey;
+	private final int leftKey;
+	private final int rightKey;
+	private final int rotLeftKey;
+	private final int rotRightKey;
 
-	private final float m_sensitivity; // Used for affecting roll speed.
+	private final float sensitivity; // Used for affecting roll speed.
 
 	/**
 	 * {@link FreeMove} constructor for fixed axis free look. See
@@ -121,43 +121,43 @@ public class FreeMove extends GameComponent {
 	 *            - Key used to rotate right. See {@link Input} for values.
 	 */
 	public FreeMove(final float speed, final float rotationSensitivity, final int forwardKey, final int backKey, final int leftKey, final int rightKey, final int rotLeft, final int rotRight) {
-		m_speed = speed;
-		m_forwardKey = forwardKey;
-		m_backKey = backKey;
-		m_leftKey = leftKey;
-		m_rightKey = rightKey;
-		m_rotLeftKey = rotLeft;
-		m_rotRightKey = rotRight;
-		m_sensitivity = rotationSensitivity;
+		this.speed = speed;
+		this.forwardKey = forwardKey;
+		this.backKey = backKey;
+		this.leftKey = leftKey;
+		this.rightKey = rightKey;
+		this.rotLeftKey = rotLeft;
+		this.rotRightKey = rotRight;
+		this.sensitivity = rotationSensitivity;
 	}
 
 	@Override
-	public void Input(final float delta) {
-		final float movAmt = m_speed * delta;
+	public void input(final float delta) {
+		final float movAmt = speed * delta;
 
-		if (Input.GetKey(m_forwardKey)) {
-			Move(GetTransform().GetRot().GetForward(), movAmt);
+		if (Input.getKey(forwardKey)) {
+			Move(getTransform().getRot().getForward(), movAmt);
 		}
-		if (Input.GetKey(m_backKey)) {
-			Move(GetTransform().GetRot().GetForward(), -movAmt);
+		if (Input.getKey(backKey)) {
+			Move(getTransform().getRot().getForward(), -movAmt);
 		}
-		if (Input.GetKey(m_leftKey)) {
-			Move(GetTransform().GetRot().GetLeft(), movAmt);
+		if (Input.getKey(leftKey)) {
+			Move(getTransform().getRot().getLeft(), movAmt);
 		}
-		if (Input.GetKey(m_rightKey)) {
-			Move(GetTransform().GetRot().GetRight(), movAmt);
+		if (Input.getKey(rightKey)) {
+			Move(getTransform().getRot().getRight(), movAmt);
 		}
 
-		if (Input.GetKey(m_rotLeftKey)) {
-			GetTransform().Rotate(GetTransform().GetRot().GetForward(), (float) Math.toRadians(movAmt * m_sensitivity));
+		if (Input.getKey(rotLeftKey)) {
+			getTransform().rotate(getTransform().getRot().getForward(), (float) Math.toRadians(movAmt * sensitivity));
 		}
-		if (Input.GetKey(m_rotRightKey)) {
-			GetTransform().Rotate(GetTransform().GetRot().GetForward(), (float) Math.toRadians(-movAmt * m_sensitivity));
+		if (Input.getKey(rotRightKey)) {
+			getTransform().rotate(getTransform().getRot().getForward(), (float) Math.toRadians(-movAmt * sensitivity));
 		}
 
 	}
 
 	private void Move(final Vector3f dir, final float amt) {
-		GetTransform().SetPos(GetTransform().GetPos().Add(dir.Mul(amt)));
+		getTransform().setPos(getTransform().getPos().add(dir.mul(amt)));
 	}
 }

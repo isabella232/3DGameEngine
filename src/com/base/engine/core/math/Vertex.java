@@ -27,22 +27,22 @@ public class Vertex {
 	/**
 	 * The position of the vertex
 	 */
-	private Vector3f m_pos;
+	private Vector3f pos;
 	/**
 	 * Location on a texture to pull data from to map to this point. Used for
 	 * wrapping textures over objects
 	 */
-	private Vector2f m_texCoord;
+	private Vector2f texCoord;
 	/**
 	 * The direction of the vertex
 	 */
-	private Vector3f m_normal;
+	private Vector3f normal;
 	/**
 	 * A Tangent vector is typically regarded as one vector that exists within
 	 * the surface's plane or which lies tangent to a reference point on a
 	 * curved surface. Taken from: http://gamedev.stackexchange.com/a/51402
 	 */
-	private Vector3f m_tangent;
+	private Vector3f tangent;
 
 	/**
 	 * Initialize a new {@link Vertex}
@@ -100,10 +100,10 @@ public class Vertex {
 	 *            tangent to a reference point on a curved surface.
 	 */
 	public Vertex(final Vector3f pos, final Vector2f texCoord, final Vector3f normal, final Vector3f tangent) {
-		m_pos = pos;
-		m_texCoord = texCoord;
-		m_normal = normal;
-		m_tangent = tangent;
+		this.pos = pos;
+		this.texCoord = texCoord;
+		this.normal = normal;
+		this.tangent = tangent;
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class Vertex {
 	 * @return Vector that exists within the surface's plane or which lies
 	 *         tangent to a reference point on a curved surface.
 	 */
-	public Vector3f GetTangent() {
-		return m_tangent;
+	public Vector3f getTangent() {
+		return tangent;
 	}
 
 	/**
@@ -123,8 +123,8 @@ public class Vertex {
 	 *            - Vector that exists within the surface's plane or which lies
 	 *            tangent to a reference point on a curved surface.
 	 */
-	public void SetTangent(final Vector3f tangent) {
-		m_tangent = tangent;
+	public void setTangent(final Vector3f tangent) {
+		this.tangent = tangent;
 	}
 
 	/**
@@ -132,8 +132,8 @@ public class Vertex {
 	 * 
 	 * @return The position of the vertex
 	 */
-	public Vector3f GetPos() {
-		return m_pos;
+	public Vector3f getPos() {
+		return pos;
 	}
 
 	/**
@@ -142,8 +142,8 @@ public class Vertex {
 	 * @param pos
 	 *            - The position of the vertex
 	 */
-	public void SetPos(final Vector3f pos) {
-		m_pos = pos;
+	public void setPos(final Vector3f pos) {
+		this.pos = pos;
 	}
 
 	/**
@@ -152,8 +152,8 @@ public class Vertex {
 	 * @return Location on a texture to pull data from to map to this point.
 	 *         Used for wrapping textures over objects
 	 */
-	public Vector2f GetTexCoord() {
-		return m_texCoord;
+	public Vector2f getTexCoord() {
+		return texCoord;
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class Vertex {
 	 *            - Location on a texture to pull data from to map to this
 	 *            point. Used for wrapping textures over objects
 	 */
-	public void SetTexCoord(final Vector2f texCoord) {
-		m_texCoord = texCoord;
+	public void setTexCoord(final Vector2f texCoord) {
+		this.texCoord = texCoord;
 	}
 
 	/**
@@ -172,8 +172,8 @@ public class Vertex {
 	 * 
 	 * @return The direction of the vertex
 	 */
-	public Vector3f GetNormal() {
-		return m_normal;
+	public Vector3f getNormal() {
+		return normal;
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class Vertex {
 	 * @param normal
 	 *            - The direction of the vertex
 	 */
-	public void SetNormal(final Vector3f normal) {
-		m_normal = normal;
+	public void setNormal(final Vector3f normal) {
+		this.normal = normal;
 	}
 }

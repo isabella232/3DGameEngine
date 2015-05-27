@@ -28,11 +28,11 @@ public class Window {
 
 	private static final Vector2f CENTER_POSITION = new Vector2f(0, 0);
 
-	public static void CreateWindow(final int width, final int height, final String title) {
+	public static void createWindow(final int width, final int height, final String title) {
 		Display.setTitle(title);
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
-			Window.CENTER_POSITION.Set(Window.GetWidth() / 2, Window.GetHeight() / 2);
+			Window.CENTER_POSITION.set(Window.getWidth() / 2, Window.getHeight() / 2);
 			Display.create();
 			Keyboard.create();
 			Mouse.create();
@@ -41,37 +41,37 @@ public class Window {
 		}
 	}
 
-	public static void Render() {
+	public static void render() {
 		Display.update();
 	}
 
-	public static void Dispose() {
+	public static void dispose() {
 		Display.destroy();
 		Keyboard.destroy();
 		Mouse.destroy();
 	}
 
-	public static boolean IsCloseRequested() {
+	public static boolean isCloseRequested() {
 		return Display.isCloseRequested();
 	}
 
-	public static int GetWidth() {
+	public static int getWidth() {
 		return Display.getDisplayMode().getWidth();
 	}
 
-	public static int GetHeight() {
+	public static int getHeight() {
 		return Display.getDisplayMode().getHeight();
 	}
 
-	public static String GetTitle() {
+	public static String getTitle() {
 		return Display.getTitle();
 	}
 
-	public Vector2f GetCenter() {
-		return new Vector2f(Window.GetWidth() / 2, Window.GetHeight() / 2);
+	public Vector2f getCenter() {
+		return new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 	}
 
-	public static Vector2f GetCenterPosition() {
+	public static Vector2f getCenterPosition() {
 		return Window.CENTER_POSITION;
 	}
 

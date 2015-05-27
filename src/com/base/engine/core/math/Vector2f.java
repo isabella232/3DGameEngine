@@ -17,117 +17,127 @@
 package com.base.engine.core.math;
 
 public class Vector2f {
-	private float m_x;
-	private float m_y;
+	private float x;
+	private float y;
 
 	public Vector2f(final float x, final float y) {
-		m_x = x;
-		m_y = y;
+		this.x = x;
+		this.y = y;
 	}
 
-	public float Length() {
-		return (float) Math.sqrt(m_x * m_x + m_y * m_y);
+	public float length() {
+		return (float) Math.sqrt(x * x + y * y);
 	}
 
-	public float Max() {
-		return Math.max(m_x, m_y);
+	public float max() {
+		return Math.max(x, y);
 	}
 
-	public float Dot(final Vector2f r) {
-		return m_x * r.GetX() + m_y * r.GetY();
+	public float dot(final Vector2f r) {
+		return x * r.getX() + y * r.getY();
 	}
 
-	public Vector2f Normalized() {
-		final float length = Length();
+	public Vector2f normalized() {
+		final float length = length();
 
-		return new Vector2f(m_x / length, m_y / length);
+		return new Vector2f(x / length, y / length);
 	}
 
-	public float Cross(final Vector2f r) {
-		return m_x * r.GetY() - m_y * r.GetX();
+	public float cross(final Vector2f r) {
+		return x * r.getY() - y * r.getX();
 	}
 
-	public Vector2f Lerp(final Vector2f dest, final float lerpFactor) {
-		return dest.Sub(this).Mul(lerpFactor).Add(this);
+	public Vector2f lerp(final Vector2f dest, final float lerpFactor) {
+		return dest.sub(this).mul(lerpFactor).add(this);
 	}
 
-	public Vector2f Rotate(final float angle) {
+	public Vector2f rotate(final float angle) {
 		final double rad = Math.toRadians(angle);
 		final double cos = Math.cos(rad);
 		final double sin = Math.sin(rad);
 
-		return new Vector2f((float) (m_x * cos - m_y * sin), (float) (m_x * sin + m_y * cos));
+		return new Vector2f((float) (x * cos - y * sin), (float) (x * sin + y * cos));
 	}
 
-	public Vector2f Add(final Vector2f r) {
-		return new Vector2f(m_x + r.GetX(), m_y + r.GetY());
+	public Vector2f add(final Vector2f r) {
+		return new Vector2f(x + r.getX(), y + r.getY());
 	}
 
-	public Vector2f Add(final float r) {
-		return new Vector2f(m_x + r, m_y + r);
+	public Vector2f add(final float r) {
+		return new Vector2f(x + r, y + r);
 	}
 
-	public Vector2f Sub(final Vector2f r) {
-		return new Vector2f(m_x - r.GetX(), m_y - r.GetY());
+	public Vector2f sub(final Vector2f r) {
+		return new Vector2f(x - r.getX(), y - r.getY());
 	}
 
-	public Vector2f Sub(final float r) {
-		return new Vector2f(m_x - r, m_y - r);
+	public Vector2f sub(final float r) {
+		return new Vector2f(x - r, y - r);
 	}
 
-	public Vector2f Mul(final Vector2f r) {
-		return new Vector2f(m_x * r.GetX(), m_y * r.GetY());
+	public Vector2f mul(final Vector2f r) {
+		return new Vector2f(x * r.getX(), y * r.getY());
 	}
 
-	public Vector2f Mul(final float r) {
-		return new Vector2f(m_x * r, m_y * r);
+	public Vector2f mul(final float r) {
+		return new Vector2f(x * r, y * r);
 	}
 
-	public Vector2f Div(final Vector2f r) {
-		return new Vector2f(m_x / r.GetX(), m_y / r.GetY());
+	public Vector2f div(final Vector2f r) {
+		return new Vector2f(x / r.getX(), y / r.getY());
 	}
 
-	public Vector2f Div(final float r) {
-		return new Vector2f(m_x / r, m_y / r);
+	public Vector2f div(final float r) {
+		return new Vector2f(x / r, y / r);
 	}
 
-	public Vector2f Abs() {
-		return new Vector2f(Math.abs(m_x), Math.abs(m_y));
+	public Vector2f abs() {
+		return new Vector2f(Math.abs(x), Math.abs(y));
 	}
 
 	@Override
 	public String toString() {
-		return "(" + m_x + " " + m_y + ")";
+		return "(" + x + " " + y + ")";
 	}
 
-	public Vector2f Set(final float x, final float y) {
-		m_x = x;
-		m_y = y;
+	public Vector2f set(final float x, final float y) {
+		this.x = x;
+		this.y = y;
 		return this;
 	}
 
-	public Vector2f Set(final Vector2f r) {
-		Set(r.GetX(), r.GetY());
+	public Vector2f set(final Vector2f r) {
+		set(r.getX(), r.getY());
 		return this;
 	}
 
-	public float GetX() {
-		return m_x;
+	public float getX() {
+		return x;
 	}
 
-	public void SetX(final float x) {
-		m_x = x;
+	public void setX(final float x) {
+		this.x = x;
 	}
 
-	public float GetY() {
-		return m_y;
+	public float getY() {
+		return y;
 	}
 
-	public void SetY(final float y) {
-		m_y = y;
+	public void setY(final float y) {
+		this.y = y;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof Vector2f) {
+			return equals((Vector2f) obj);
+		}
+		
+		return super.equals(obj);
+	}
+	
 	public boolean equals(final Vector2f r) {
-		return m_x == r.GetX() && m_y == r.GetY();
+		return x == r.getX() && y == r.getY();
 	}
 }

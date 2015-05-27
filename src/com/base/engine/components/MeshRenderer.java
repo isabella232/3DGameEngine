@@ -22,18 +22,18 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
 public class MeshRenderer extends GameComponent {
-	private final Mesh m_mesh;
-	private final Material m_material;
+	private final Mesh mesh;
+	private final Material material;
 
 	public MeshRenderer(final Mesh mesh, final Material material) {
-		m_mesh = mesh;
-		m_material = material;
+		this.mesh = mesh;
+		this.material = material;
 	}
 
 	@Override
-	public void Render(final Shader shader, final RenderingEngine renderingEngine) {
-		shader.Bind();
-		shader.UpdateUniforms(GetTransform(), m_material, renderingEngine);
-		m_mesh.Draw();
+	public void render(final Shader shader, final RenderingEngine renderingEngine) {
+		shader.bind();
+		shader.updateUniforms(getTransform(), material, renderingEngine);
+		mesh.draw();
 	}
 }

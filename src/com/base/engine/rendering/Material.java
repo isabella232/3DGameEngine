@@ -21,28 +21,28 @@ import java.util.HashMap;
 import com.base.engine.rendering.resourceManagement.MappedValues;
 
 public class Material extends MappedValues {
-	private final HashMap<String, Texture> m_textureHashMap;
+	private final HashMap<String, Texture> textureHashMap;
 
 	public Material(final Texture diffuse, final float specularIntensity, final float specularPower, final Texture normal, final Texture dispMap, final float dispMapScale, final float dispMapOffset) {
 		super();
-		m_textureHashMap = new HashMap<String, Texture>();
-		AddTexture("diffuse", diffuse);
-		AddFloat("specularIntensity", specularIntensity);
-		AddFloat("specularPower", specularPower);
-		AddTexture("normalMap", normal);
-		AddTexture("dispMap", dispMap);
+		textureHashMap = new HashMap<String, Texture>();
+		addTexture("diffuse", diffuse);
+		addFloat("specularIntensity", specularIntensity);
+		addFloat("specularPower", specularPower);
+		addTexture("normalMap", normal);
+		addTexture("dispMap", dispMap);
 
 		final float baseBias = dispMapScale / 2.0f;
-		AddFloat("dispMapScale", dispMapScale);
-		AddFloat("dispMapBias", -baseBias + baseBias * dispMapOffset);
+		addFloat("dispMapScale", dispMapScale);
+		addFloat("dispMapBias", -baseBias + baseBias * dispMapOffset);
 	}
 
-	public void AddTexture(final String name, final Texture texture) {
-		m_textureHashMap.put(name, texture);
+	public void addTexture(final String name, final Texture texture) {
+		textureHashMap.put(name, texture);
 	}
 
-	public Texture GetTexture(final String name) {
-		final Texture result = m_textureHashMap.get(name);
+	public Texture getTexture(final String name) {
+		final Texture result = textureHashMap.get(name);
 		if (result != null) {
 			return result;
 		}

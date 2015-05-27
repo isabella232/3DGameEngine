@@ -29,24 +29,24 @@ import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
 
 public class RenderingEngine extends MappedValues {
-	private final HashMap<String, Integer> m_samplerMap;
-	private final ArrayList<BaseLight> m_lights;
-	private BaseLight m_activeLight;
+	private final HashMap<String, Integer> samplerMap;
+	private final ArrayList<BaseLight> lights;
+	private BaseLight activeLight;
 
-	private final Shader m_forwardAmbient;
-	private Camera m_mainCamera;
+	private final Shader forwardAmbient;
+	private Camera mainCamera;
 
 	public RenderingEngine() {
 		super();
-		m_lights = new ArrayList<BaseLight>();
-		m_samplerMap = new HashMap<String, Integer>();
-		m_samplerMap.put("diffuse", 0);
-		m_samplerMap.put("normalMap", 1);
-		m_samplerMap.put("dispMap", 2);
+		lights = new ArrayList<BaseLight>();
+		samplerMap = new HashMap<String, Integer>();
+		samplerMap.put("diffuse", 0);
+		samplerMap.put("normalMap", 1);
+		samplerMap.put("dispMap", 2);
 
-		AddVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
+		addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
-		m_forwardAmbient = new Shader("forward-ambient");
+		forwardAmbient = new Shader("forward-ambient");
 
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -61,27 +61,27 @@ public class RenderingEngine extends MappedValues {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	public void UpdateUniformStruct(final Transform transform, final Material material, final Shader shader, final String uniformName, final String uniformType) {
+	public void updateUniformStruct(final Transform transform, final Material material, final Shader shader, final String uniformName, final String uniformType) {
 		throw new IllegalArgumentException(uniformType + " is not a supported type in RenderingEngine");
 	}
 
-	public void Render(final GameObject object) throws IllegalStateException {
-		if (GetMainCamera() == null) {
+	public void render(final GameObject object) throws IllegalStateException {
+		if (getMainCamera() == null) {
 			System.err.println("Error! Main camera not found. This is very very big bug, and game will crash.");
 			throw new IllegalStateException("Camera was not attached to the RenderingEngine");
 		}
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		object.RenderAll(m_forwardAmbient, this);
+		object.renderAll(forwardAmbient, this);
 
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		GL11.glDepthMask(false);
 		GL11.glDepthFunc(GL11.GL_EQUAL);
 
-		for (final BaseLight light : m_lights) {
-			m_activeLight = light;
-			object.RenderAll(light.GetShader(), this);
+		for (final BaseLight light : lights) {
+			activeLight = light;
+			object.renderAll(light.getShader(), this);
 		}
 
 		GL11.glDepthFunc(GL11.GL_LESS);
@@ -89,31 +89,31 @@ public class RenderingEngine extends MappedValues {
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	public static String GetOpenGLVersion() {
+	public static String getOpenGLVersion() {
 		return GL11.glGetString(GL11.GL_VERSION);
 	}
 
-	public void AddLight(final BaseLight light) {
-		m_lights.add(light);
+	public void addLight(final BaseLight light) {
+		lights.add(light);
 	}
 
-	public void AddCamera(final Camera camera) {
-		m_mainCamera = camera;
+	public void addCamera(final Camera camera) {
+		mainCamera = camera;
 	}
 
-	public int GetSamplerSlot(final String samplerName) {
-		return m_samplerMap.get(samplerName);
+	public int getSamplerSlot(final String samplerName) {
+		return samplerMap.get(samplerName);
 	}
 
-	public BaseLight GetActiveLight() {
-		return m_activeLight;
+	public BaseLight getActiveLight() {
+		return activeLight;
 	}
 
-	public Camera GetMainCamera() {
-		return m_mainCamera;
+	public Camera getMainCamera() {
+		return mainCamera;
 	}
 
-	public void SetMainCamera(final Camera mainCamera) {
-		m_mainCamera = mainCamera;
+	public void setMainCamera(final Camera mainCamera) {
+		this.mainCamera = mainCamera;
 	}
 }

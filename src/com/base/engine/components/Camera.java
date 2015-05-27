@@ -21,23 +21,23 @@ import com.base.engine.core.math.Matrix4f;
 import com.base.engine.core.math.Vector3f;
 
 public class Camera extends GameComponent {
-	private final Matrix4f m_projection;
+	private final Matrix4f projection;
 
 	public Camera(final Matrix4f projection) {
-		m_projection = projection;
+		this.projection = projection;
 	}
 
-	public Matrix4f GetViewProjection() {
-		final Matrix4f cameraRotation = GetTransform().GetTransformedRot().Conjugate().ToRotationMatrix();
-		final Vector3f cameraPos = GetTransform().GetTransformedPos().Mul(-1);
+	public Matrix4f getViewProjection() {
+		final Matrix4f cameraRotation = getTransform().getTransformedRot().conjugate().toRotationMatrix();
+		final Vector3f cameraPos = getTransform().getTransformedPos().mul(-1);
 
-		final Matrix4f cameraTranslation = new Matrix4f().InitTranslation(cameraPos.GetX(), cameraPos.GetY(), cameraPos.GetZ());
+		final Matrix4f cameraTranslation = new Matrix4f().initTranslation(cameraPos.getX(), cameraPos.getY(), cameraPos.getZ());
 
-		return m_projection.Mul(cameraRotation.Mul(cameraTranslation));
+		return projection.mul(cameraRotation.mul(cameraTranslation));
 	}
 
 	@Override
-	public void AddToEngine(final CoreEngine engine) {
-		engine.GetRenderingEngine().AddCamera(this);
+	public void addToEngine(final CoreEngine engine) {
+		engine.getRenderingEngine().addCamera(this);
 	}
 }

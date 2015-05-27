@@ -24,10 +24,10 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
 public class GameObject {
-	private ArrayList<GameObject> m_children;
-	private ArrayList<GameComponent> m_components;
-	private Transform m_transform;
-	private CoreEngine m_engine;
+	private ArrayList<GameObject> children;
+	private ArrayList<GameComponent> components;
+	private Transform transform;
+	private CoreEngine engine;
 	private final String objectId;
 
 	/**
@@ -46,7 +46,7 @@ public class GameObject {
 	 *            - The name/object id that can be used to identify this object.
 	 */
 	public GameObject(final String objectId) {
-		m_engine = null;
+		this.engine = null;
 		this.objectId = objectId;
 	}
 
@@ -56,8 +56,8 @@ public class GameObject {
 	 * 
 	 * @return true if m_children is not null or empty
 	 */
-	public boolean HasChildren() {
-		return m_children != null && !m_children.isEmpty();
+	public boolean hasChildren() {
+		return children != null && !children.isEmpty();
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class GameObject {
 	 * 
 	 * @return true if m_children is not null or empty
 	 */
-	public boolean HasComponents() {
-		return m_components != null && !m_components.isEmpty();
+	public boolean hasComponents() {
+		return components != null && !components.isEmpty();
 	}
 
 	/**
@@ -75,19 +75,19 @@ public class GameObject {
 	 * 
 	 * @return true if m_children is not null or empty
 	 */
-	public boolean HasAttached() {
-		return HasChildren() || HasComponents();
+	public boolean hasAttached() {
+		return hasChildren() || hasComponents();
 	}
 
-	public GameObject AddChild(final GameObject child) {
+	public GameObject addChild(final GameObject child) {
 
-		if (m_children == null) {
-			m_children = new ArrayList<GameObject>();
+		if (children == null) {
+			children = new ArrayList<GameObject>();
 		}
 
-		m_children.add(child);
-		child.SetEngine(m_engine);
-		child.GetTransform().SetParent(GetTransform());
+		children.add(child);
+		child.setEngine(engine);
+		child.getTransform().setParent(getTransform());
 
 		return this;
 	}
@@ -99,13 +99,13 @@ public class GameObject {
 	 *            - The object ID of the targeted game object.
 	 * @return <code>null</code> if no object was found
 	 */
-	public GameObject GetChild(final String objectId) {
-		if (!HasChildren()) {
+	public GameObject getChild(final String objectId) {
+		if (!hasChildren()) {
 			return null;
 		}
 
-		for (final GameObject object : m_children) {
-			if (objectId.equals(object.GetObjectId())) {
+		for (final GameObject object : children) {
+			if (objectId.equals(object.getObjectId())) {
 				return object;
 			}
 		}
@@ -113,114 +113,114 @@ public class GameObject {
 		return null;
 	}
 
-	public GameObject AddComponent(final GameComponent component) {
+	public GameObject addComponent(final GameComponent component) {
 
-		if (m_components == null) {
-			m_components = new ArrayList<GameComponent>();
+		if (components == null) {
+			components = new ArrayList<GameComponent>();
 		}
 
-		m_components.add(component);
-		component.SetParent(this);
+		components.add(component);
+		component.setParent(this);
 
 		return this;
 	}
 
-	public void InputAll(final float delta) {
-		Input(delta);
+	public void anputAll(final float delta) {
+		input(delta);
 
-		if (!HasChildren()) {
+		if (!hasChildren()) {
 			return;
 		}
 
-		for (final GameObject child : m_children) {
-			child.InputAll(delta);
+		for (final GameObject child : children) {
+			child.anputAll(delta);
 		}
 	}
 
-	public void UpdateAll(final float delta) {
-		Update(delta);
+	public void updateAll(final float delta) {
+		update(delta);
 
-		if (!HasChildren()) {
+		if (!hasChildren()) {
 			return;
 		}
 
-		for (final GameObject child : m_children) {
-			child.UpdateAll(delta);
+		for (final GameObject child : children) {
+			child.updateAll(delta);
 		}
 	}
 
-	public void RenderAll(final Shader shader, final RenderingEngine renderingEngine) {
-		Render(shader, renderingEngine);
+	public void renderAll(final Shader shader, final RenderingEngine renderingEngine) {
+		render(shader, renderingEngine);
 
-		if (!HasChildren()) {
+		if (!hasChildren()) {
 			return;
 		}
 
-		for (final GameObject child : m_children) {
-			child.RenderAll(shader, renderingEngine);
+		for (final GameObject child : children) {
+			child.renderAll(shader, renderingEngine);
 		}
 	}
 
-	public void Input(final float delta) {
-		if (HasTransform()) {
-			m_transform.Update();
+	public void input(final float delta) {
+		if (hasTransform()) {
+			transform.update();
 		}
 
-		if (!HasComponents()) {
+		if (!hasComponents()) {
 			return;
 		}
 
-		for (final GameComponent component : m_components) {
-			component.Input(delta);
+		for (final GameComponent component : components) {
+			component.input(delta);
 		}
 	}
 
-	public void Update(final float delta) {
+	public void update(final float delta) {
 
-		if (!HasComponents()) {
+		if (!hasComponents()) {
 			return;
 		}
 
-		for (final GameComponent component : m_components) {
-			component.Update(delta);
+		for (final GameComponent component : components) {
+			component.update(delta);
 		}
 	}
 
-	public void Render(final Shader shader, final RenderingEngine renderingEngine) {
+	public void render(final Shader shader, final RenderingEngine renderingEngine) {
 
-		if (!HasComponents()) {
+		if (!hasComponents()) {
 			return;
 		}
 
-		for (final GameComponent component : m_components) {
-			component.Render(shader, renderingEngine);
+		for (final GameComponent component : components) {
+			component.render(shader, renderingEngine);
 		}
 	}
 
-	public ArrayList<GameObject> GetAllAttached() {
+	public ArrayList<GameObject> getAllAttached() {
 		final ArrayList<GameObject> result = new ArrayList<GameObject>();
 
-		if (!HasChildren()) {
+		if (!hasChildren()) {
 			return result;
 		}
 
-		for (final GameObject child : m_children) {
-			result.addAll(child.GetAllAttached());
+		for (final GameObject child : children) {
+			result.addAll(child.getAllAttached());
 		}
 
 		result.add(this);
 		return result;
 	}
 
-	public boolean HasTransform() {
-		return m_transform != null;
+	public boolean hasTransform() {
+		return transform != null;
 	}
 
-	public Transform GetTransform() {
-		if (!HasTransform()) {
-			m_transform = new Transform();
+	public Transform getTransform() {
+		if (!hasTransform()) {
+			transform = new Transform();
 		}
-		return m_transform;
+		return transform;
 	}
 
 	/**
@@ -228,23 +228,23 @@ public class GameObject {
 	 * 
 	 * @return Either a UUID or a object id set by the constructor
 	 */
-	public String GetObjectId() {
+	public String getObjectId() {
 		return objectId;
 	}
 
-	public void SetEngine(final CoreEngine engine) {
-		if (m_engine != engine) {
-			m_engine = engine;
+	public void setEngine(final CoreEngine engine) {
+		if (this.engine != engine) {
+			this.engine = engine;
 
-			if (HasComponents()) {
-				for (final GameComponent component : m_components) {
-					component.AddToEngine(engine);
+			if (hasComponents()) {
+				for (final GameComponent component : components) {
+					component.addToEngine(engine);
 				}
 			}
 
-			if (HasChildren()) {
-				for (final GameObject child : m_children) {
-					child.SetEngine(engine);
+			if (hasChildren()) {
+				for (final GameObject child : children) {
+					child.setEngine(engine);
 				}
 			}
 		}

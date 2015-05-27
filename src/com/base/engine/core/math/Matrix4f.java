@@ -23,7 +23,7 @@ public class Matrix4f {
 		m = new float[4][4];
 	}
 
-	public Matrix4f InitIdentity() {
+	public Matrix4f initIdentity() {
 		m[0][0] = 1;
 		m[0][1] = 0;
 		m[0][2] = 0;
@@ -44,7 +44,7 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Matrix4f InitTranslation(final float x, final float y, final float z) {
+	public Matrix4f initTranslation(final float x, final float y, final float z) {
 		m[0][0] = 1;
 		m[0][1] = 0;
 		m[0][2] = 0;
@@ -65,7 +65,7 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Matrix4f InitRotation(float x, float y, float z) {
+	public Matrix4f initRotation(float x, float y, float z) {
 		final Matrix4f rx = new Matrix4f();
 		final Matrix4f ry = new Matrix4f();
 		final Matrix4f rz = new Matrix4f();
@@ -125,12 +125,12 @@ public class Matrix4f {
 		ry.m[3][2] = 0;
 		ry.m[3][3] = 1;
 
-		m = rz.Mul(ry.Mul(rx)).GetM();
+		m = rz.mul(ry.mul(rx)).getM();
 
 		return this;
 	}
 
-	public Matrix4f InitScale(final float x, final float y, final float z) {
+	public Matrix4f initScale(final float x, final float y, final float z) {
 		m[0][0] = x;
 		m[0][1] = 0;
 		m[0][2] = 0;
@@ -151,7 +151,7 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Matrix4f InitPerspective(final float fov, final float aspectRatio, final float zNear, final float zFar) {
+	public Matrix4f initPerspective(final float fov, final float aspectRatio, final float zNear, final float zFar) {
 		final float tanHalfFOV = (float) Math.tan(fov / 2);
 		final float zRange = zNear - zFar;
 
@@ -175,7 +175,7 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Matrix4f InitOrthographic(final float left, final float right, final float bottom, final float top, final float near, final float far) {
+	public Matrix4f initOrthographic(final float left, final float right, final float bottom, final float top, final float near, final float far) {
 		final float width = right - left;
 		final float height = top - bottom;
 		final float depth = far - near;
@@ -200,33 +200,33 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Matrix4f InitRotation(final Vector3f forward, final Vector3f up) {
-		final Vector3f f = forward.Normalized();
+	public Matrix4f initRotation(final Vector3f forward, final Vector3f up) {
+		final Vector3f f = forward.normalized();
 
-		Vector3f r = up.Normalized();
-		r = r.Cross(f);
+		Vector3f r = up.normalized();
+		r = r.cross(f);
 
-		final Vector3f u = f.Cross(r);
+		final Vector3f u = f.cross(r);
 
-		return InitRotation(f, u, r);
+		return initRotation(f, u, r);
 	}
 
-	public Matrix4f InitRotation(final Vector3f forward, final Vector3f up, final Vector3f right) {
+	public Matrix4f initRotation(final Vector3f forward, final Vector3f up, final Vector3f right) {
 		final Vector3f f = forward;
 		final Vector3f r = right;
 		final Vector3f u = up;
 
-		m[0][0] = r.GetX();
-		m[0][1] = r.GetY();
-		m[0][2] = r.GetZ();
+		m[0][0] = r.getX();
+		m[0][1] = r.getY();
+		m[0][2] = r.getZ();
 		m[0][3] = 0;
-		m[1][0] = u.GetX();
-		m[1][1] = u.GetY();
-		m[1][2] = u.GetZ();
+		m[1][0] = u.getX();
+		m[1][1] = u.getY();
+		m[1][2] = u.getZ();
 		m[1][3] = 0;
-		m[2][0] = f.GetX();
-		m[2][1] = f.GetY();
-		m[2][2] = f.GetZ();
+		m[2][0] = f.getX();
+		m[2][1] = f.getY();
+		m[2][2] = f.getZ();
 		m[2][3] = 0;
 		m[3][0] = 0;
 		m[3][1] = 0;
@@ -236,23 +236,23 @@ public class Matrix4f {
 		return this;
 	}
 
-	public Vector3f Transform(final Vector3f r) {
-		return new Vector3f(m[0][0] * r.GetX() + m[0][1] * r.GetY() + m[0][2] * r.GetZ() + m[0][3], m[1][0] * r.GetX() + m[1][1] * r.GetY() + m[1][2] * r.GetZ() + m[1][3], m[2][0] * r.GetX() + m[2][1] * r.GetY() + m[2][2] * r.GetZ() + m[2][3]);
+	public Vector3f transform(final Vector3f r) {
+		return new Vector3f(m[0][0] * r.getX() + m[0][1] * r.getY() + m[0][2] * r.getZ() + m[0][3], m[1][0] * r.getX() + m[1][1] * r.getY() + m[1][2] * r.getZ() + m[1][3], m[2][0] * r.getX() + m[2][1] * r.getY() + m[2][2] * r.getZ() + m[2][3]);
 	}
 
-	public Matrix4f Mul(final Matrix4f r) {
+	public Matrix4f mul(final Matrix4f r) {
 		final Matrix4f res = new Matrix4f();
 
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				res.Set(i, j, m[i][0] * r.Get(0, j) + m[i][1] * r.Get(1, j) + m[i][2] * r.Get(2, j) + m[i][3] * r.Get(3, j));
+				res.set(i, j, m[i][0] * r.get(0, j) + m[i][1] * r.get(1, j) + m[i][2] * r.get(2, j) + m[i][3] * r.get(3, j));
 			}
 		}
 
 		return res;
 	}
 
-	public float[][] GetM() {
+	public float[][] getM() {
 		final float[][] res = new float[4][4];
 
 		for (int i = 0; i < 4; i++) {
@@ -264,15 +264,15 @@ public class Matrix4f {
 		return res;
 	}
 
-	public float Get(final int x, final int y) {
+	public float get(final int x, final int y) {
 		return m[x][y];
 	}
 
-	public void SetM(final float[][] m) {
+	public void setM(final float[][] m) {
 		this.m = m;
 	}
 
-	public void Set(final int x, final int y, final float value) {
+	public void set(final int x, final int y, final float value) {
 		m[x][y] = value;
 	}
 }

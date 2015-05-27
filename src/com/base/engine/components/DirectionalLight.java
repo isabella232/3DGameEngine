@@ -23,10 +23,10 @@ public class DirectionalLight extends BaseLight {
 	public DirectionalLight(final Vector3f color, final float intensity) {
 		super(color, intensity);
 
-		SetShader(new Shader("forward-directional"));
+		setShader(new Shader("forward-directional"));
 	}
 
-	public Vector3f GetDirection() {
-		return GetTransform().GetTransformedRot().GetForward();
+	public Vector3f getDirection() {
+		return getTransform().getTransformedRot().getForward();
 	}
 }

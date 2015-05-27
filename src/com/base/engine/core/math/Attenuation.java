@@ -21,15 +21,15 @@ public class Attenuation extends Vector3f {
 		super(constant, linear, exponent);
 	}
 
-	public float GetConstant() {
-		return GetX();
+	public float getConstant() {
+		return getX();
 	}
 
-	public float GetLinear() {
-		return GetY();
+	public float getLinear() {
+		return getY();
 	}
 
-	public float GetExponent() {
-		return GetZ();
+	public float getExponent() {
+		return getZ();
 	}
 }

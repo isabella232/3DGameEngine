@@ -23,31 +23,31 @@ import com.base.engine.rendering.Shader;
 public class PointLight extends BaseLight {
 	private static final int COLOR_DEPTH = 256;
 
-	private final Attenuation m_attenuation;
-	private float m_range;
+	private final Attenuation attenuation;
+	private float range;
 
 	public PointLight(final Vector3f color, final float intensity, final Attenuation attenuation) {
 		super(color, intensity);
-		m_attenuation = attenuation;
+		this.attenuation = attenuation;
 
-		final float a = attenuation.GetExponent();
-		final float b = attenuation.GetLinear();
-		final float c = attenuation.GetConstant() - PointLight.COLOR_DEPTH * GetIntensity() * GetColor().Max();
+		final float a = attenuation.getExponent();
+		final float b = attenuation.getLinear();
+		final float c = attenuation.getConstant() - PointLight.COLOR_DEPTH * getIntensity() * getColor().max();
 
-		m_range = (float) ((-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a));
+		this.range = (float) ((-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a));
 
-		SetShader(new Shader("forward-point"));
+		setShader(new Shader("forward-point"));
 	}
 
-	public float GetRange() {
-		return m_range;
+	public float getRange() {
+		return range;
 	}
 
-	public void SetRange(final float range) {
-		m_range = range;
+	public void setRange(final float range) {
+		this.range = range;
 	}
 
-	public Attenuation GetAttenuation() {
-		return m_attenuation;
+	public Attenuation getAttenuation() {
+		return attenuation;
 	}
 }

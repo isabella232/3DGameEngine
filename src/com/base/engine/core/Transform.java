@@ -21,124 +21,124 @@ import com.base.engine.core.math.Quaternion;
 import com.base.engine.core.math.Vector3f;
 
 public class Transform {
-	private Transform m_parent;
-	private Matrix4f m_parentMatrix;
+	private Transform parent;
+	private Matrix4f parentMatrix;
 
-	private Vector3f m_pos;
-	private Quaternion m_rot;
-	private Vector3f m_scale;
+	private Vector3f pos;
+	private Quaternion rot;
+	private Vector3f scale;
 
-	private Vector3f m_oldPos;
-	private Quaternion m_oldRot;
-	private Vector3f m_oldScale;
+	private Vector3f oldPos;
+	private Quaternion oldRot;
+	private Vector3f oldScale;
 
 	public Transform() {
-		m_pos = new Vector3f(0, 0, 0);
-		m_rot = new Quaternion(0, 0, 0, 1);
-		m_scale = new Vector3f(1, 1, 1);
+		pos = new Vector3f(0, 0, 0);
+		rot = new Quaternion(0, 0, 0, 1);
+		scale = new Vector3f(1, 1, 1);
 
-		m_parentMatrix = new Matrix4f().InitIdentity();
+		parentMatrix = new Matrix4f().initIdentity();
 	}
 
-	public void Update() {
-		if (m_oldPos != null) {
-			m_oldPos.Set(m_pos);
-			m_oldRot.Set(m_rot);
-			m_oldScale.Set(m_scale);
+	public void update() {
+		if (oldPos != null) {
+			oldPos.set(pos);
+			oldRot.set(rot);
+			oldScale.set(scale);
 		} else {
-			m_oldPos = new Vector3f(0, 0, 0).Set(m_pos).Add(1.0f);
-			m_oldRot = new Quaternion(0, 0, 0, 0).Set(m_rot).Mul(0.5f);
-			m_oldScale = new Vector3f(0, 0, 0).Set(m_scale).Add(1.0f);
+			oldPos = new Vector3f(0, 0, 0).set(pos).add(1.0f);
+			oldRot = new Quaternion(0, 0, 0, 0).set(rot).mul(0.5f);
+			oldScale = new Vector3f(0, 0, 0).set(scale).add(1.0f);
 		}
 	}
 
-	public void Rotate(final Vector3f axis, final float angle) {
-		m_rot = new Quaternion(axis, angle).Mul(m_rot).Normalized();
+	public void rotate(final Vector3f axis, final float angle) {
+		rot = new Quaternion(axis, angle).mul(rot).normalized();
 	}
 
-	public void LookAt(final Vector3f point, final Vector3f up) {
-		m_rot = GetLookAtRotation(point, up);
+	public void lookAt(final Vector3f point, final Vector3f up) {
+		rot = getLookAtRotation(point, up);
 	}
 
-	public Quaternion GetLookAtRotation(final Vector3f point, final Vector3f up) {
-		return new Quaternion(new Matrix4f().InitRotation(point.Sub(m_pos).Normalized(), up));
+	public Quaternion getLookAtRotation(final Vector3f point, final Vector3f up) {
+		return new Quaternion(new Matrix4f().initRotation(point.sub(pos).normalized(), up));
 	}
 
-	public boolean HasChanged() {
-		if (m_parent != null && m_parent.HasChanged()) {
+	public boolean hasChanged() {
+		if (parent != null && parent.hasChanged()) {
 			return true;
 		}
 
-		if (!m_pos.equals(m_oldPos)) {
+		if (!pos.equals(oldPos)) {
 			return true;
 		}
 
-		if (!m_rot.equals(m_oldRot)) {
+		if (!rot.equals(oldRot)) {
 			return true;
 		}
 
-		if (!m_scale.equals(m_oldScale)) {
+		if (!scale.equals(oldScale)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public Matrix4f GetTransformation() {
-		final Matrix4f translationMatrix = new Matrix4f().InitTranslation(m_pos.GetX(), m_pos.GetY(), m_pos.GetZ());
-		final Matrix4f rotationMatrix = m_rot.ToRotationMatrix();
-		final Matrix4f scaleMatrix = new Matrix4f().InitScale(m_scale.GetX(), m_scale.GetY(), m_scale.GetZ());
+	public Matrix4f getTransformation() {
+		final Matrix4f translationMatrix = new Matrix4f().initTranslation(pos.getX(), pos.getY(), pos.getZ());
+		final Matrix4f rotationMatrix = rot.toRotationMatrix();
+		final Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
-		return GetParentMatrix().Mul(translationMatrix.Mul(rotationMatrix.Mul(scaleMatrix)));
+		return getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
 	}
 
-	private Matrix4f GetParentMatrix() {
-		if (m_parent != null && m_parent.HasChanged()) {
-			m_parentMatrix = m_parent.GetTransformation();
+	private Matrix4f getParentMatrix() {
+		if (parent != null && parent.hasChanged()) {
+			parentMatrix = parent.getTransformation();
 		}
 
-		return m_parentMatrix;
+		return parentMatrix;
 	}
 
-	public void SetParent(final Transform parent) {
-		m_parent = parent;
+	public void setParent(final Transform parent) {
+		this.parent = parent;
 	}
 
-	public Vector3f GetTransformedPos() {
-		return GetParentMatrix().Transform(m_pos);
+	public Vector3f getTransformedPos() {
+		return getParentMatrix().transform(pos);
 	}
 
-	public Quaternion GetTransformedRot() {
+	public Quaternion getTransformedRot() {
 		Quaternion parentRotation = new Quaternion(0, 0, 0, 1);
 
-		if (m_parent != null) {
-			parentRotation = m_parent.GetTransformedRot();
+		if (parent != null) {
+			parentRotation = parent.getTransformedRot();
 		}
 
-		return parentRotation.Mul(m_rot);
+		return parentRotation.mul(rot);
 	}
 
-	public Vector3f GetPos() {
-		return m_pos;
+	public Vector3f getPos() {
+		return pos;
 	}
 
-	public void SetPos(final Vector3f pos) {
-		m_pos = pos;
+	public void setPos(final Vector3f pos) {
+		this.pos = pos;
 	}
 
-	public Quaternion GetRot() {
-		return m_rot;
+	public Quaternion getRot() {
+		return rot;
 	}
 
-	public void SetRot(final Quaternion rotation) {
-		m_rot = rotation;
+	public void setRot(final Quaternion rotation) {
+		rot = rotation;
 	}
 
-	public Vector3f GetScale() {
-		return m_scale;
+	public Vector3f getScale() {
+		return scale;
 	}
 
-	public void SetScale(final Vector3f scale) {
-		m_scale = scale;
+	public void setScale(final Vector3f scale) {
+		this.scale = scale;
 	}
 }

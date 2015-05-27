@@ -20,77 +20,77 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
 
 public class CoreEngine {
-	private boolean m_isRunning;
-	private final Game m_game;
-	private RenderingEngine m_renderingEngine;
-	private final int m_width;
-	private final int m_height;
-	private final double m_frameTime;
+	private boolean running;
+	private final Game game;
+	private RenderingEngine renderingEngine;
+	private final int width;
+	private final int height;
+	private final double frameTime;
 
 	public CoreEngine(final int width, final int height, final double framerate, final Game game) {
-		m_isRunning = false;
-		m_game = game;
-		m_width = width;
-		m_height = height;
-		m_frameTime = 1.0 / framerate;
-		game.SetEngine(this);
+		running = false;
+		this.game = game;
+		this.width = width;
+		this.height = height;
+		frameTime = 1.0 / framerate;
+		game.setEngine(this);
 	}
 
-	public void CreateWindow(final String title) {
-		Window.CreateWindow(m_width, m_height, title);
-		m_renderingEngine = new RenderingEngine();
+	public void createWindow(final String title) {
+		Window.createWindow(width, height, title);
+		renderingEngine = new RenderingEngine();
 	}
 
-	public void Start() {
-		if (m_isRunning) {
+	public void start() {
+		if (running) {
 			return;
 		}
 
-		Run();
+		run();
 	}
 
-	public void Stop() {
-		if (!m_isRunning) {
+	public void stop() {
+		if (!running) {
 			return;
 		}
 
-		m_isRunning = false;
+		running = false;
 	}
 
-	private void Run() {
-		m_isRunning = true;
+	private void run() {
+		running = true;
 
 		int frames = 0;
 		double frameCounter = 0;
 
-		m_game.Init();
+		game.init();
 
-		double lastTime = Time.GetTime();
+		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
 
-		while (m_isRunning) {
+		while (running) {
 			boolean render = false;
 
-			final double startTime = Time.GetTime();
+			final double startTime = Time.getTime();
 			final double passedTime = startTime - lastTime;
 			lastTime = startTime;
 
 			unprocessedTime += passedTime;
 			frameCounter += passedTime;
 
-			while (unprocessedTime > m_frameTime) {
+			while (unprocessedTime > frameTime) {
 				render = true;
 
-				unprocessedTime -= m_frameTime;
+				unprocessedTime -= frameTime;
 
-				if (Window.IsCloseRequested()) {
-					Stop();
+				if (Window.isCloseRequested()) {
+					stop();
 				}
 
-				m_game.Input((float) m_frameTime);
-				Input.Update();
+				game.input((float) frameTime);
+				Input.update();
 
-				m_game.Update((float) m_frameTime);
+				game.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {
 					System.out.println(frames);
@@ -99,8 +99,8 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				m_game.Render(m_renderingEngine);
-				Window.Render();
+				game.render(renderingEngine);
+				Window.render();
 				frames++;
 			} else {
 				try {
@@ -111,14 +111,14 @@ public class CoreEngine {
 			}
 		}
 
-		CleanUp();
+		cleanUp();
 	}
 
-	private void CleanUp() {
-		Window.Dispose();
+	private void cleanUp() {
+		Window.dispose();
 	}
 
-	public RenderingEngine GetRenderingEngine() {
-		return m_renderingEngine;
+	public RenderingEngine getRenderingEngine() {
+		return renderingEngine;
 	}
 }

@@ -31,45 +31,45 @@ import com.base.engine.rendering.resourceManagement.TextureResource;
 
 public class Texture {
 	private static final String ERROR_TEXTURE = "test.png";
-	private static HashMap<String, TextureResource> s_loadedTextures = new HashMap<String, TextureResource>();
-	private TextureResource m_resource;
-	private final String m_fileName;
+	private static HashMap<String, TextureResource> loadedTextures = new HashMap<String, TextureResource>();
+	private TextureResource resource;
+	private final String fileName;
 
 	public Texture(final String fileName) {
-		m_fileName = fileName;
-		final TextureResource oldResource = Texture.s_loadedTextures.get(fileName);
+		this.fileName = fileName;
+		final TextureResource oldResource = Texture.loadedTextures.get(fileName);
 
 		if (oldResource != null) {
-			m_resource = oldResource;
-			m_resource.AddReference();
+			resource = oldResource;
+			resource.addReference();
 		} else {
-			m_resource = Texture.LoadTexture(fileName);
-			Texture.s_loadedTextures.put(fileName, m_resource);
+			resource = Texture.loadTexture(fileName);
+			Texture.loadedTextures.put(fileName, resource);
 		}
 	}
 
 	@Override
 	protected void finalize() {
-		if (m_resource.RemoveReference() && !m_fileName.isEmpty()) {
-			Texture.s_loadedTextures.remove(m_fileName);
+		if (resource.removeReference() && !fileName.isEmpty()) {
+			Texture.loadedTextures.remove(fileName);
 		}
 	}
 
-	public void Bind() {
-		Bind(0);
+	public void bind() {
+		bind(0);
 	}
 
-	public void Bind(final int samplerSlot) {
+	public void bind(final int samplerSlot) {
 		assert samplerSlot >= 0 && samplerSlot <= 31;
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + samplerSlot);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, m_resource.GetId());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
 	}
 
-	public int GetID() {
-		return m_resource.GetId();
+	public int getID() {
+		return resource.getId();
 	}
 
-	private static TextureResource LoadTexture(final String fileName) {
+	private static TextureResource loadTexture(final String fileName) {
 
 		final File textureFile = new File("./res/textures/" + fileName);
 
@@ -80,11 +80,11 @@ public class Texture {
 		// Example of this: Half Life 2
 		if (!textureFile.exists()) {
 			// TODO: Is this the best way of handling this?
-			if (!Texture.s_loadedTextures.containsKey(Texture.ERROR_TEXTURE)) {
-				Texture.s_loadedTextures.put(Texture.ERROR_TEXTURE, Texture.LoadTexture(Texture.ERROR_TEXTURE));
+			if (!Texture.loadedTextures.containsKey(Texture.ERROR_TEXTURE)) {
+				Texture.loadedTextures.put(Texture.ERROR_TEXTURE, Texture.loadTexture(Texture.ERROR_TEXTURE));
 			}
 
-			return Texture.s_loadedTextures.get(Texture.ERROR_TEXTURE);
+			return Texture.loadedTextures.get(Texture.ERROR_TEXTURE);
 
 		}
 
@@ -92,7 +92,7 @@ public class Texture {
 			final BufferedImage image = ImageIO.read(textureFile);
 			final int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
-			final ByteBuffer buffer = Util.CreateByteBuffer(image.getHeight() * image.getWidth() * 4);
+			final ByteBuffer buffer = Util.createByteBuffer(image.getHeight() * image.getWidth() * 4);
 			final boolean hasAlpha = image.getColorModel().hasAlpha();
 
 			for (int y = 0; y < image.getHeight(); y++) {
@@ -113,7 +113,7 @@ public class Texture {
 			buffer.flip();
 
 			final TextureResource resource = new TextureResource();
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.GetId());
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
 
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);

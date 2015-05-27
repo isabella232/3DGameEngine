@@ -24,10 +24,10 @@ import com.base.engine.rendering.Window;
 public class FreeLook extends GameComponent {
 	private static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
 
-	private boolean m_mouseLocked = false;
-	private final float m_sensitivity;
-	private final int m_unlockMouseKey;
-	private final boolean m_fixedAxis;
+	private boolean mouseLocked = false;
+	private final float sensitivity;
+	private final int unlockMouseKey;
+	private final boolean fixedAxis;
 
 	/**
 	 * Fixed axsis free look constructor.
@@ -78,36 +78,36 @@ public class FreeLook extends GameComponent {
 	 *            fixed axis rotation.
 	 */
 	public FreeLook(final float sensitivity, final int unlockMouseKey, final boolean fixedAxis) {
-		m_sensitivity = sensitivity;
-		m_unlockMouseKey = unlockMouseKey;
-		m_fixedAxis = fixedAxis;
+		this.sensitivity = sensitivity;
+		this.unlockMouseKey = unlockMouseKey;
+		this.fixedAxis = fixedAxis;
 	}
 
 	@Override
-	public void Input(final float delta) {
-		final Vector2f centerPosition = Window.GetCenterPosition();
+	public void input(final float delta) {
+		final Vector2f centerPosition = Window.getCenterPosition();
 
-		if (Input.GetKey(m_unlockMouseKey)) {
-			Input.SetCursor(true);
-			m_mouseLocked = false;
+		if (Input.getKey(unlockMouseKey)) {
+			Input.setCursor(true);
+			mouseLocked = false;
 		}
-		if (Input.GetMouseDown(0)) {
-			Input.SetMousePosition(centerPosition);
-			Input.SetCursor(false);
-			m_mouseLocked = true;
+		if (Input.getMouseDown(0)) {
+			Input.setMousePosition(centerPosition);
+			Input.setCursor(false);
+			mouseLocked = true;
 		}
 
-		if (m_mouseLocked) {
-			final Vector2f deltaPos = Input.GetMousePosition().Sub(centerPosition);
+		if (mouseLocked) {
+			final Vector2f deltaPos = Input.getMousePosition().sub(centerPosition);
 
-			final boolean rotY = deltaPos.GetX() != 0;
-			final boolean rotX = deltaPos.GetY() != 0;
+			final boolean rotY = deltaPos.getX() != 0;
+			final boolean rotX = deltaPos.getY() != 0;
 
 			if (rotY) {
-				GetTransform().Rotate(m_fixedAxis ? FreeLook.Y_AXIS : GetTransform().GetRot().GetUp(), (float) Math.toRadians(deltaPos.GetX() * m_sensitivity));
+				getTransform().rotate(fixedAxis ? FreeLook.Y_AXIS : getTransform().getRot().getUp(), (float) Math.toRadians(deltaPos.getX() * sensitivity));
 			}
 			if (rotX) {
-				GetTransform().Rotate(GetTransform().GetRot().GetRight(), (float) Math.toRadians(-deltaPos.GetY() * m_sensitivity)); // TODO:
+				getTransform().rotate(getTransform().getRot().getRight(), (float) Math.toRadians(-deltaPos.getY() * sensitivity)); // TODO:
 																																		// Check
 																																		// for
 																																		// fixed
@@ -116,7 +116,7 @@ public class FreeLook extends GameComponent {
 			}
 
 			if (rotY || rotX) {
-				Input.SetMousePosition(centerPosition);
+				Input.setMousePosition(centerPosition);
 			}
 		}
 	}

@@ -27,41 +27,41 @@ import com.base.engine.core.math.Matrix4f;
 import com.base.engine.core.math.Vertex;
 
 public class Util {
-	public static FloatBuffer CreateFloatBuffer(final int size) {
+	public static FloatBuffer createFloatBuffer(final int size) {
 		return BufferUtils.createFloatBuffer(size);
 	}
 
-	public static IntBuffer CreateIntBuffer(final int size) {
+	public static IntBuffer createIntBuffer(final int size) {
 		return BufferUtils.createIntBuffer(size);
 	}
 
-	public static ByteBuffer CreateByteBuffer(final int size) {
+	public static ByteBuffer createByteBuffer(final int size) {
 		return BufferUtils.createByteBuffer(size);
 	}
 
-	public static IntBuffer CreateFlippedBuffer(final int... values) {
-		final IntBuffer buffer = Util.CreateIntBuffer(values.length);
+	public static IntBuffer createFlippedBuffer(final int... values) {
+		final IntBuffer buffer = Util.createIntBuffer(values.length);
 		buffer.put(values);
 		buffer.flip();
 
 		return buffer;
 	}
 
-	public static FloatBuffer CreateFlippedBuffer(final Vertex[] vertices) {
-		final FloatBuffer buffer = Util.CreateFloatBuffer(vertices.length * Vertex.SIZE);
+	public static FloatBuffer createFlippedBuffer(final Vertex[] vertices) {
+		final FloatBuffer buffer = Util.createFloatBuffer(vertices.length * Vertex.SIZE);
 
 		for (final Vertex vertice : vertices) {
-			buffer.put(vertice.GetPos().GetX());
-			buffer.put(vertice.GetPos().GetY());
-			buffer.put(vertice.GetPos().GetZ());
-			buffer.put(vertice.GetTexCoord().GetX());
-			buffer.put(vertice.GetTexCoord().GetY());
-			buffer.put(vertice.GetNormal().GetX());
-			buffer.put(vertice.GetNormal().GetY());
-			buffer.put(vertice.GetNormal().GetZ());
-			buffer.put(vertice.GetTangent().GetX());
-			buffer.put(vertice.GetTangent().GetY());
-			buffer.put(vertice.GetTangent().GetZ());
+			buffer.put(vertice.getPos().getX());
+			buffer.put(vertice.getPos().getY());
+			buffer.put(vertice.getPos().getZ());
+			buffer.put(vertice.getTexCoord().getX());
+			buffer.put(vertice.getTexCoord().getY());
+			buffer.put(vertice.getNormal().getX());
+			buffer.put(vertice.getNormal().getY());
+			buffer.put(vertice.getNormal().getZ());
+			buffer.put(vertice.getTangent().getX());
+			buffer.put(vertice.getTangent().getY());
+			buffer.put(vertice.getTangent().getZ());
 		}
 
 		buffer.flip();
@@ -69,12 +69,12 @@ public class Util {
 		return buffer;
 	}
 
-	public static FloatBuffer CreateFlippedBuffer(final Matrix4f value) {
-		final FloatBuffer buffer = Util.CreateFloatBuffer(4 * 4);
+	public static FloatBuffer createFlippedBuffer(final Matrix4f value) {
+		final FloatBuffer buffer = Util.createFloatBuffer(4 * 4);
 
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				buffer.put(value.Get(i, j));
+				buffer.put(value.get(i, j));
 			}
 		}
 
@@ -90,7 +90,7 @@ public class Util {
 	 *            - Array of {@link String}s to remove from.
 	 * @return An array containing every non-empty string from <code>data</code>
 	 */
-	public static String[] RemoveEmptyStrings(final String... data) {
+	public static String[] removeEmptyStrings(final String... data) {
 		final ArrayList<String> result = new ArrayList<String>();
 
 		for (final String filtering : data) {
@@ -115,7 +115,7 @@ public class Util {
 	 *            - An array of integer objects
 	 * @return An array with primitive representations of <code>data</code>
 	 */
-	public static int[] ToIntArray(final Integer... data) {
+	public static int[] toIntArray(final Integer... data) {
 		final int[] result = new int[data.length];
 
 		for (int i = 0; i < data.length; i++) {

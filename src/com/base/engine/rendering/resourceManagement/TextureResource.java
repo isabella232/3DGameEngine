@@ -20,19 +20,19 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 public class TextureResource extends ReferenceCounter {
-	private final int m_id;
+	private final int id;
 
 	public TextureResource() {
-		m_id = GL11.glGenTextures();
-		AddReference();
+		id = GL11.glGenTextures();
+		addReference();
 	}
 
 	@Override
 	protected void finalize() {
-		GL15.glDeleteBuffers(m_id);
+		GL15.glDeleteBuffers(id);
 	}
 
-	public int GetId() {
-		return m_id;
+	public int getId() {
+		return id;
 	}
 }

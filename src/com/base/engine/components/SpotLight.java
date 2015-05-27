@@ -21,24 +21,24 @@ import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.Shader;
 
 public class SpotLight extends PointLight {
-	private float m_cutoff;
+	private float cutoff;
 
 	public SpotLight(final Vector3f color, final float intensity, final Attenuation attenuation, final float cutoff) {
 		super(color, intensity, attenuation);
-		m_cutoff = cutoff;
+		this.cutoff = cutoff;
 
-		SetShader(new Shader("forward-spot"));
+		setShader(new Shader("forward-spot"));
 	}
 
-	public Vector3f GetDirection() {
-		return GetTransform().GetTransformedRot().GetForward();
+	public Vector3f getDirection() {
+		return getTransform().getTransformedRot().getForward();
 	}
 
-	public float GetCutoff() {
-		return m_cutoff;
+	public float getCutoff() {
+		return cutoff;
 	}
 
-	public void SetCutoff(final float cutoff) {
-		m_cutoff = cutoff;
+	public void setCutoff(final float cutoff) {
+		this.cutoff = cutoff;
 	}
 }

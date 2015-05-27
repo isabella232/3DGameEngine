@@ -17,107 +17,107 @@
 package com.base.engine.core.math;
 
 public class Quaternion {
-	private float m_x;
-	private float m_y;
-	private float m_z;
-	private float m_w;
+	private float x;
+	private float y;
+	private float z;
+	private float w;
 
 	public Quaternion(final float x, final float y, final float z, final float w) {
-		m_x = x;
-		m_y = y;
-		m_z = z;
-		m_w = w;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 	}
 
 	public Quaternion(final Vector3f axis, final float angle) {
 		final float sinHalfAngle = (float) Math.sin(angle / 2);
 		final float cosHalfAngle = (float) Math.cos(angle / 2);
 
-		m_x = axis.GetX() * sinHalfAngle;
-		m_y = axis.GetY() * sinHalfAngle;
-		m_z = axis.GetZ() * sinHalfAngle;
-		m_w = cosHalfAngle;
+		x = axis.getX() * sinHalfAngle;
+		y = axis.getY() * sinHalfAngle;
+		z = axis.getZ() * sinHalfAngle;
+		w = cosHalfAngle;
 	}
 
-	public float Length() {
-		return (float) Math.sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
+	public float length() {
+		return (float) Math.sqrt(x * x + y * y + z * z + w * w);
 	}
 
-	public Quaternion Normalized() {
-		final float length = Length();
+	public Quaternion normalized() {
+		final float length = length();
 
-		return new Quaternion(m_x / length, m_y / length, m_z / length, m_w / length);
+		return new Quaternion(x / length, y / length, z / length, w / length);
 	}
 
-	public Quaternion Conjugate() {
-		return new Quaternion(-m_x, -m_y, -m_z, m_w);
+	public Quaternion conjugate() {
+		return new Quaternion(-x, -y, -z, w);
 	}
 
-	public Quaternion Mul(final float r) {
-		return new Quaternion(m_x * r, m_y * r, m_z * r, m_w * r);
+	public Quaternion mul(final float r) {
+		return new Quaternion(x * r, y * r, z * r, w * r);
 	}
 
-	public Quaternion Mul(final Quaternion r) {
-		final float w_ = m_w * r.GetW() - m_x * r.GetX() - m_y * r.GetY() - m_z * r.GetZ();
-		final float x_ = m_x * r.GetW() + m_w * r.GetX() + m_y * r.GetZ() - m_z * r.GetY();
-		final float y_ = m_y * r.GetW() + m_w * r.GetY() + m_z * r.GetX() - m_x * r.GetZ();
-		final float z_ = m_z * r.GetW() + m_w * r.GetZ() + m_x * r.GetY() - m_y * r.GetX();
+	public Quaternion mul(final Quaternion r) {
+		final float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
+		final float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
+		final float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
+		final float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
 
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion Mul(final Vector3f r) {
-		final float w_ = -m_x * r.GetX() - m_y * r.GetY() - m_z * r.GetZ();
-		final float x_ = m_w * r.GetX() + m_y * r.GetZ() - m_z * r.GetY();
-		final float y_ = m_w * r.GetY() + m_z * r.GetX() - m_x * r.GetZ();
-		final float z_ = m_w * r.GetZ() + m_x * r.GetY() - m_y * r.GetX();
+	public Quaternion mul(final Vector3f r) {
+		final float w_ = -x * r.getX() - y * r.getY() - z * r.getZ();
+		final float x_ = w * r.getX() + y * r.getZ() - z * r.getY();
+		final float y_ = w * r.getY() + z * r.getX() - x * r.getZ();
+		final float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
 
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion Sub(final Quaternion r) {
-		return new Quaternion(m_x - r.GetX(), m_y - r.GetY(), m_z - r.GetZ(), m_w - r.GetW());
+	public Quaternion sub(final Quaternion r) {
+		return new Quaternion(x - r.getX(), y - r.getY(), z - r.getZ(), w - r.getW());
 	}
 
-	public Quaternion Add(final Quaternion r) {
-		return new Quaternion(m_x + r.GetX(), m_y + r.GetY(), m_z + r.GetZ(), m_w + r.GetW());
+	public Quaternion add(final Quaternion r) {
+		return new Quaternion(x + r.getX(), y + r.getY(), z + r.getZ(), w + r.getW());
 	}
 
-	public Matrix4f ToRotationMatrix() {
-		final Vector3f forward = new Vector3f(2.0f * (m_x * m_z - m_w * m_y), 2.0f * (m_y * m_z + m_w * m_x), 1.0f - 2.0f * (m_x * m_x + m_y * m_y));
-		final Vector3f up = new Vector3f(2.0f * (m_x * m_y + m_w * m_z), 1.0f - 2.0f * (m_x * m_x + m_z * m_z), 2.0f * (m_y * m_z - m_w * m_x));
-		final Vector3f right = new Vector3f(1.0f - 2.0f * (m_y * m_y + m_z * m_z), 2.0f * (m_x * m_y - m_w * m_z), 2.0f * (m_x * m_z + m_w * m_y));
+	public Matrix4f toRotationMatrix() {
+		final Vector3f forward = new Vector3f(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+		final Vector3f up = new Vector3f(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
+		final Vector3f right = new Vector3f(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
 
-		return new Matrix4f().InitRotation(forward, up, right);
+		return new Matrix4f().initRotation(forward, up, right);
 	}
 
-	public float Dot(final Quaternion r) {
-		return m_x * r.GetX() + m_y * r.GetY() + m_z * r.GetZ() + m_w * r.GetW();
+	public float dot(final Quaternion r) {
+		return x * r.getX() + y * r.getY() + z * r.getZ() + w * r.getW();
 	}
 
-	public Quaternion NLerp(final Quaternion dest, final float lerpFactor, final boolean shortest) {
+	public Quaternion nlerp(final Quaternion dest, final float lerpFactor, final boolean shortest) {
 		Quaternion correctedDest = dest;
 
-		if (shortest && Dot(dest) < 0) {
-			correctedDest = new Quaternion(-dest.GetX(), -dest.GetY(), -dest.GetZ(), -dest.GetW());
+		if (shortest && dot(dest) < 0) {
+			correctedDest = new Quaternion(-dest.getX(), -dest.getY(), -dest.getZ(), -dest.getW());
 		}
 
-		return correctedDest.Sub(this).Mul(lerpFactor).Add(this).Normalized();
+		return correctedDest.sub(this).mul(lerpFactor).add(this).normalized();
 	}
 
-	public Quaternion SLerp(final Quaternion dest, final float lerpFactor, final boolean shortest) {
+	public Quaternion slerp(final Quaternion dest, final float lerpFactor, final boolean shortest) {
 		final float EPSILON = 1e3f;
 
-		float cos = Dot(dest);
+		float cos = dot(dest);
 		Quaternion correctedDest = dest;
 
 		if (shortest && cos < 0) {
 			cos = -cos;
-			correctedDest = new Quaternion(-dest.GetX(), -dest.GetY(), -dest.GetZ(), -dest.GetW());
+			correctedDest = new Quaternion(-dest.getX(), -dest.getY(), -dest.getZ(), -dest.getW());
 		}
 
 		if (Math.abs(cos) >= 1 - EPSILON) {
-			return NLerp(correctedDest, lerpFactor, false);
+			return nlerp(correctedDest, lerpFactor, false);
 		}
 
 		final float sin = (float) Math.sqrt(1.0f - cos * cos);
@@ -127,118 +127,128 @@ public class Quaternion {
 		final float srcFactor = (float) Math.sin((1.0f - lerpFactor) * angle) * invSin;
 		final float destFactor = (float) Math.sin(lerpFactor * angle) * invSin;
 
-		return this.Mul(srcFactor).Add(correctedDest.Mul(destFactor));
+		return this.mul(srcFactor).add(correctedDest.mul(destFactor));
 	}
 
 	// From Ken Shoemake's "Quaternion Calculus and Fast Animation" article
 	public Quaternion(final Matrix4f rot) {
-		final float trace = rot.Get(0, 0) + rot.Get(1, 1) + rot.Get(2, 2);
+		final float trace = rot.get(0, 0) + rot.get(1, 1) + rot.get(2, 2);
 
 		if (trace > 0) {
 			final float s = 0.5f / (float) Math.sqrt(trace + 1.0f);
-			m_w = 0.25f / s;
-			m_x = (rot.Get(1, 2) - rot.Get(2, 1)) * s;
-			m_y = (rot.Get(2, 0) - rot.Get(0, 2)) * s;
-			m_z = (rot.Get(0, 1) - rot.Get(1, 0)) * s;
+			w = 0.25f / s;
+			x = (rot.get(1, 2) - rot.get(2, 1)) * s;
+			y = (rot.get(2, 0) - rot.get(0, 2)) * s;
+			z = (rot.get(0, 1) - rot.get(1, 0)) * s;
 		} else {
-			if (rot.Get(0, 0) > rot.Get(1, 1) && rot.Get(0, 0) > rot.Get(2, 2)) {
-				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.Get(0, 0) - rot.Get(1, 1) - rot.Get(2, 2));
-				m_w = (rot.Get(1, 2) - rot.Get(2, 1)) / s;
-				m_x = 0.25f * s;
-				m_y = (rot.Get(1, 0) + rot.Get(0, 1)) / s;
-				m_z = (rot.Get(2, 0) + rot.Get(0, 2)) / s;
-			} else if (rot.Get(1, 1) > rot.Get(2, 2)) {
-				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.Get(1, 1) - rot.Get(0, 0) - rot.Get(2, 2));
-				m_w = (rot.Get(2, 0) - rot.Get(0, 2)) / s;
-				m_x = (rot.Get(1, 0) + rot.Get(0, 1)) / s;
-				m_y = 0.25f * s;
-				m_z = (rot.Get(2, 1) + rot.Get(1, 2)) / s;
+			if (rot.get(0, 0) > rot.get(1, 1) && rot.get(0, 0) > rot.get(2, 2)) {
+				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.get(0, 0) - rot.get(1, 1) - rot.get(2, 2));
+				w = (rot.get(1, 2) - rot.get(2, 1)) / s;
+				x = 0.25f * s;
+				y = (rot.get(1, 0) + rot.get(0, 1)) / s;
+				z = (rot.get(2, 0) + rot.get(0, 2)) / s;
+			} else if (rot.get(1, 1) > rot.get(2, 2)) {
+				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.get(1, 1) - rot.get(0, 0) - rot.get(2, 2));
+				w = (rot.get(2, 0) - rot.get(0, 2)) / s;
+				x = (rot.get(1, 0) + rot.get(0, 1)) / s;
+				y = 0.25f * s;
+				z = (rot.get(2, 1) + rot.get(1, 2)) / s;
 			} else {
-				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.Get(2, 2) - rot.Get(0, 0) - rot.Get(1, 1));
-				m_w = (rot.Get(0, 1) - rot.Get(1, 0)) / s;
-				m_x = (rot.Get(2, 0) + rot.Get(0, 2)) / s;
-				m_y = (rot.Get(1, 2) + rot.Get(2, 1)) / s;
-				m_z = 0.25f * s;
+				final float s = 2.0f * (float) Math.sqrt(1.0f + rot.get(2, 2) - rot.get(0, 0) - rot.get(1, 1));
+				w = (rot.get(0, 1) - rot.get(1, 0)) / s;
+				x = (rot.get(2, 0) + rot.get(0, 2)) / s;
+				y = (rot.get(1, 2) + rot.get(2, 1)) / s;
+				z = 0.25f * s;
 			}
 		}
 
-		final float length = (float) Math.sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
-		m_x /= length;
-		m_y /= length;
-		m_z /= length;
-		m_w /= length;
+		final float length = (float) Math.sqrt(x * x + y * y + z * z + w * w);
+		x /= length;
+		y /= length;
+		z /= length;
+		w /= length;
 	}
 
-	public Vector3f GetForward() {
-		return new Vector3f(0, 0, 1).Rotate(this);
+	public Vector3f getForward() {
+		return new Vector3f(0, 0, 1).rotate(this);
 	}
 
-	public Vector3f GetBack() {
-		return new Vector3f(0, 0, -1).Rotate(this);
+	public Vector3f getBack() {
+		return new Vector3f(0, 0, -1).rotate(this);
 	}
 
-	public Vector3f GetUp() {
-		return new Vector3f(0, 1, 0).Rotate(this);
+	public Vector3f getUp() {
+		return new Vector3f(0, 1, 0).rotate(this);
 	}
 
-	public Vector3f GetDown() {
-		return new Vector3f(0, -1, 0).Rotate(this);
+	public Vector3f getDown() {
+		return new Vector3f(0, -1, 0).rotate(this);
 	}
 
-	public Vector3f GetRight() {
-		return new Vector3f(1, 0, 0).Rotate(this);
+	public Vector3f getRight() {
+		return new Vector3f(1, 0, 0).rotate(this);
 	}
 
-	public Vector3f GetLeft() {
-		return new Vector3f(-1, 0, 0).Rotate(this);
+	public Vector3f getLeft() {
+		return new Vector3f(-1, 0, 0).rotate(this);
 	}
 
-	public Quaternion Set(final float x, final float y, final float z, final float w) {
-		m_x = x;
-		m_y = y;
-		m_z = z;
-		m_w = w;
+	public Quaternion set(final float x, final float y, final float z, final float w) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 		return this;
 	}
 
-	public Quaternion Set(final Quaternion r) {
-		Set(r.GetX(), r.GetY(), r.GetZ(), r.GetW());
+	public Quaternion set(final Quaternion r) {
+		set(r.getX(), r.getY(), r.getZ(), r.getW());
 		return this;
 	}
 
-	public float GetX() {
-		return m_x;
+	public float getX() {
+		return x;
 	}
 
-	public void SetX(final float x) {
-		m_x = x;
+	public void setX(final float x) {
+		this.x = x;
 	}
 
-	public float GetY() {
-		return m_y;
+	public float getY() {
+		return y;
 	}
 
-	public void SetY(final float m_y) {
-		this.m_y = m_y;
+	public void setY(final float y) {
+		this.y = y;
 	}
 
-	public float GetZ() {
-		return m_z;
+	public float getZ() {
+		return z;
 	}
 
-	public void SetZ(final float z) {
-		m_z = z;
+	public void setZ(final float z) {
+		this.z = z;
 	}
 
-	public float GetW() {
-		return m_w;
+	public float getW() {
+		return w;
 	}
 
-	public void SetW(final float w) {
-		m_w = w;
+	public void setW(final float w) {
+		this.w = w;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof Quaternion) {
+			return equals((Quaternion) obj);
+		}
+		
+		return super.equals(obj);
+	}
+	
 	public boolean equals(final Quaternion r) {
-		return m_x == r.GetX() && m_y == r.GetY() && m_z == r.GetZ() && m_w == r.GetW();
+		return x == r.getX() && y == r.getY() && z == r.getZ() && w == r.getW();
 	}
 }
