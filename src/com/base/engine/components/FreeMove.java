@@ -136,16 +136,16 @@ public class FreeMove extends GameComponent {
 		final float movAmt = speed * delta;
 
 		if (Input.getKey(forwardKey)) {
-			Move(getTransform().getRot().getForward(), movAmt);
+			move(getTransform().getRot().getForward(), movAmt);
 		}
 		if (Input.getKey(backKey)) {
-			Move(getTransform().getRot().getForward(), -movAmt);
+			move(getTransform().getRot().getForward(), -movAmt);
 		}
 		if (Input.getKey(leftKey)) {
-			Move(getTransform().getRot().getLeft(), movAmt);
+			move(getTransform().getRot().getLeft(), movAmt);
 		}
 		if (Input.getKey(rightKey)) {
-			Move(getTransform().getRot().getRight(), movAmt);
+			move(getTransform().getRot().getRight(), movAmt);
 		}
 
 		if (Input.getKey(rotLeftKey)) {
@@ -157,7 +157,7 @@ public class FreeMove extends GameComponent {
 
 	}
 
-	private void Move(final Vector3f dir, final float amt) {
+	private void move(final Vector3f dir, final float amt) {
 		getTransform().setPos(getTransform().getPos().add(dir.mul(amt)));
 	}
 }
