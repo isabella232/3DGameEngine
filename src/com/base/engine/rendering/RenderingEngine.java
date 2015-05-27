@@ -16,9 +16,6 @@
 
 package com.base.engine.rendering;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +27,7 @@ import com.base.engine.core.GameObject;
 import com.base.engine.core.Transform;
 import com.base.engine.core.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
-import static org.lwjgl.opengl.GL11.*;
+
 public class RenderingEngine extends MappedValues {
 	private final HashMap<String, Integer> samplerMap;
 	private final ArrayList<BaseLight> lights;
@@ -63,33 +60,6 @@ public class RenderingEngine extends MappedValues {
 
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
-
-	public static void lights() {
-
-
-        // Luces
-        ByteBuffer temp = ByteBuffer.allocateDirect(16);
-        temp.order(ByteOrder.nativeOrder());
-        
-        glLight(GL_LIGHT0, GL_AMBIENT, (FloatBuffer) temp.asFloatBuffer().put(new float[] {
-                0.20f, 0.2f, 0.20f, 1.0f }).flip());
-
-        glLight(GL_LIGHT0, GL_DIFFUSE, (FloatBuffer) temp.asFloatBuffer().put(new float[] {
-                0.5f, 0.5f, 0.5f, 1.0f }).flip());
-
-        glLight(GL_LIGHT0, GL_SPECULAR, (FloatBuffer) temp.asFloatBuffer().put(new float[] {
-                1.0f, 1.0f, 1.0f, 1.0f }).flip());
-
-        glLight(GL_LIGHT0, GL_POSITION, (FloatBuffer) temp.asFloatBuffer().put(new float[] {
-                0.0f, 50.0f, 0.0f, 1.0f }).flip());
-
-        glLight(GL_LIGHT0, GL_CONSTANT_ATTENUATION, (FloatBuffer) temp.asFloatBuffer().put(new float[] {
-                0.9f, 0.0f, 0.0f, 0.0f }).flip());
-
-        glEnable(GL_LIGHT0);
-        glEnable(GL_LIGHTING);
-
-    }
 	
 	public void updateUniformStruct(final Transform transform, final Material material, final Shader shader, final String uniformName, final String uniformType) {
 		throw new IllegalArgumentException(uniformType + " is not a supported type in RenderingEngine");
@@ -108,9 +78,7 @@ public class RenderingEngine extends MappedValues {
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		GL11.glDepthMask(false);
 		GL11.glDepthFunc(GL11.GL_EQUAL);
-		
-		lights();
-		
+
 		for (final BaseLight light : lights) {
 			activeLight = light;
 			object.renderAll(light.getShader(), this);
