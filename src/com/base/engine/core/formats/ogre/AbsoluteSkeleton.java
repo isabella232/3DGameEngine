@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.base.engine.rendering.model.mesh.animation.Bone;
+
 public class AbsoluteSkeleton {
 	List<Bone> bones;
 	private HashMap<Integer,Bone> hsBones;

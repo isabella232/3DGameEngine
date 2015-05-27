@@ -1,4 +1,4 @@
-package com.base.engine.rendering.animation;
+package com.base.engine.rendering.model.mesh.animation;
 
 import java.util.ArrayList;
 import java.util.List;

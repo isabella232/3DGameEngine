@@ -1,4 +1,4 @@
-package com.base.engine.core.formats.ogre;
+package com.base.engine.rendering.model.mesh.animation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,6 @@ import java.util.List;
 import com.base.engine.core.Transform;
 import com.base.engine.core.math.Quaternion;
 import com.base.engine.core.math.Vector3f;
-import com.base.engine.rendering.animation.Keyframe;
 
 public class Bone {
 

@@ -18,9 +18,9 @@ import com.base.engine.core.math.Vector2f;
 import com.base.engine.core.math.Vector3f;
 import com.base.engine.core.math.Vertex;
 import com.base.engine.rendering.Mesh;
-import com.base.engine.rendering.animation.BoneDeformationGroup;
 import com.base.engine.rendering.model.mesh.Model;
 import com.base.engine.rendering.model.mesh.Skeleton;
+import com.base.engine.rendering.model.mesh.animation.BoneDeformationGroup;
 
 public class OgreLoader {
 

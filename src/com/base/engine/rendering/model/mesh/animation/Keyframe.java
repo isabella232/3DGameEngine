@@ -1,4 +1,4 @@
-package com.base.engine.rendering.animation;
+package com.base.engine.rendering.model.mesh.animation;
 
 public class Keyframe {
 	float tX, tY, tZ;
