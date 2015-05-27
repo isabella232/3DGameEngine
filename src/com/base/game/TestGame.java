@@ -48,7 +48,7 @@ public class TestGame extends Game {
 		final Material material2 = new Material(new Texture("bricks.jpg"), 1, 8, new Texture("bricks_normal.jpg"), new Texture("bricks_disp.png"), 0.03f, -0.5f);
 		final Model floor = ObjLoader.loadObjModel("plane3.obj", material2);
 		
-		final Material material = new Material(new Texture("bricks2.jpg"), 1, 8, new Texture("bricks2_normal.png"), new Texture("bricks2_disp.jpg"), 0.04f, -1.0f);
+		final Material material = new Material(new Texture("oto1024.jpg"), 1, 8, new Texture("bricks2_normal.png"), new Texture("bricks2_disp.jpg"), 0.04f, -0.0f);
 		//final Model monkey = ObjLoader.loadObjModel("monkey3.obj", material2);
 		
 
