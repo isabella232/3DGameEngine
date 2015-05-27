@@ -16,40 +16,54 @@
 
 package com.base.game;
 
+import java.io.File;
+
+import org.lwjgl.Sys;
+
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.FreeLook;
 import com.base.engine.components.FreeMove;
-//import com.base.engine.components.MeshRenderer;
+import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Game;
 import com.base.engine.core.GameObject;
+import com.base.engine.core.formats.obj.ObjLoader;
+import com.base.engine.core.formats.ogre.OgreLoader;
 import com.base.engine.core.math.Attenuation;
 import com.base.engine.core.math.Matrix4f;
 import com.base.engine.core.math.Quaternion;
 import com.base.engine.core.math.Vector3f;
-//import com.base.engine.rendering.Material;
-//import com.base.engine.rendering.Mesh;
-//import com.base.engine.rendering.Texture;
+import com.base.engine.rendering.Material;
+import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Window;
+import com.base.engine.rendering.model.mesh.Model;
 
 public class TestGame extends Game {
 	@Override
 	public void init() {
-		/*final Mesh mesh = new Mesh("plane3.obj");
+		
+		
 		final Material material2 = new Material(new Texture("bricks.jpg"), 1, 8, new Texture("bricks_normal.jpg"), new Texture("bricks_disp.png"), 0.03f, -0.5f);
-
+		final Model floor = ObjLoader.loadObjModel("plane3.obj", material2);
+		
 		final Material material = new Material(new Texture("bricks2.jpg"), 1, 8, new Texture("bricks2_normal.png"), new Texture("bricks2_disp.jpg"), 0.04f, -1.0f);
-
-		final Mesh tempMesh = new Mesh("monkey3.obj");
-
-		final MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
+		//final Model monkey = ObjLoader.loadObjModel("monkey3.obj", material2);
+		
 
 		final GameObject planeObject = new GameObject();
-		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().getPos().set(0, -1, 5);*/
+		planeObject.addComponent(floor);
+		planeObject.getTransform().getPos().set(0, -1, 5);
 
+		
+		final GameObject elephantObject = new GameObject();
+
+		final Model animatedModel = OgreLoader.loadOgreModel("OtoNew", material);
+		elephantObject.getTransform().getPos().set(0, -1, 5);
+		elephantObject.addComponent(animatedModel);
+		
+		
 		final GameObject directionalLightObject = new GameObject();
 		final DirectionalLight directionalLight = new DirectionalLight(new Vector3f(0, 0, 1), 0.8f);
 
@@ -66,10 +80,11 @@ public class TestGame extends Game {
 		spotLightObject.getTransform().getPos().set(5, 0, 5);
 		spotLightObject.getTransform().setRot(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(90.0f)));
 
-		//addObject(planeObject);
+		addObject(planeObject);
 		addObject(directionalLightObject);
 		addObject(pointLightObject);
 		addObject(spotLightObject);
+		addObject(elephantObject);
 
 		//final GameObject testMesh3 = new GameObject().addComponent(new LookAtComponent()).addComponent(new MeshRenderer(tempMesh, material));
 

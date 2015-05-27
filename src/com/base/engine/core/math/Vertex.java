@@ -101,7 +101,7 @@ public class Vertex {
 	 */
 	public Vertex(final Vector3f pos, final Vector2f texCoord, final Vector3f normal, final Vector3f tangent) {
 		this.pos = pos;
-		this.texCoord = texCoord;
+		this.texCoord = texCoord == null ? new Vector2f(0, 0) : texCoord;
 		this.normal = normal;
 		this.tangent = tangent;
 	}

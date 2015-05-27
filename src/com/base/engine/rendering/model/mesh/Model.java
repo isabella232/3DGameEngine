@@ -1,16 +1,21 @@
 package com.base.engine.rendering.model.mesh;
 
+import com.base.engine.components.MeshRenderer;
+import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
 
 
-public class Model {
+public class Model extends MeshRenderer {
 	
 	private Mesh mesh;
 	private Skeleton skeleton;
+	private Material material;
 	
-	public Model(Mesh mesh, Skeleton skeleton) {
+	public Model(Mesh mesh, Skeleton skeleton, Material material) {
+		super(mesh, material);
 		this.mesh = mesh;
 		this.skeleton = skeleton;
+		this.material = material;
 	}
 	
 	
@@ -28,6 +33,10 @@ public class Model {
 	
 	public Skeleton getSkeleton() {
 		return skeleton;
+	}
+	
+	public Material getMaterial() {
+		return material;
 	}
 	
 	/*

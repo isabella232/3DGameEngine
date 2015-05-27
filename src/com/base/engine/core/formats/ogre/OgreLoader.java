@@ -17,6 +17,7 @@ import com.base.engine.core.formats.ogre.mesh.Vertexboneassignment;
 import com.base.engine.core.math.Vector2f;
 import com.base.engine.core.math.Vector3f;
 import com.base.engine.core.math.Vertex;
+import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.model.mesh.Model;
 import com.base.engine.rendering.model.mesh.Skeleton;
@@ -146,7 +147,7 @@ public class OgreLoader {
 		return null;
 	}
 
-	public static Model loadOgreModel(final String modelName) throws IllegalStateException {
+	public static Model loadOgreModel(final String modelName, Material material) throws IllegalStateException {
 
 		final File meshFile = getMeshFile(modelName);
 		final File skeletonFile = getSkeletonFile(modelName);
@@ -166,7 +167,7 @@ public class OgreLoader {
 			skeleton = loadSkeleton(skeletonFile);
 		}
 
-		return new Model(mesh, skeleton);
+		return new Model(mesh, skeleton, material);
 	}
 
 	/**
@@ -195,10 +196,10 @@ public class OgreLoader {
 		if (!name.startsWith("res/models/")) {
 			name = "res/models/" + name;
 		}
-
 		File ogreFile = new File(name);
 
-		if (Util.isFileReadable(ogreFile)) {
+		if (!Util.isFileReadable(ogreFile)) {
+			System.out.println(ogreFile + " is not readable!");
 			return null;
 		}
 
