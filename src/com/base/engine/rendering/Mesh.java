@@ -28,7 +28,7 @@ import com.base.engine.rendering.resourceManagement.MeshResource;
 public class Mesh extends MeshResource {
 
 	public Mesh(final Vertex[] vertices, final int[] indices, final boolean calcNormals) {
-		super(vertices.length);
+		super(indices.length);
 		addVertices(vertices, indices, calcNormals);
 	}
 
