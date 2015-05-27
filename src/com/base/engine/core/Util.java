@@ -16,6 +16,7 @@
 
 package com.base.engine.core;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -130,4 +131,14 @@ public class Util {
 
 		return result;
 	}
+	
+	/**
+	 * Check if a file handle can be read from.
+	 * @param file - The file handle to check
+	 * @return <code>true</code> if the file handle can be read from
+	 */
+	public static boolean isFileReadable(File file) {
+		return file != null && file.canRead() && !file.isDirectory();		
+	}
+	
 }

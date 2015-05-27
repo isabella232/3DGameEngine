@@ -16,9 +16,6 @@
 
 package com.base.engine.rendering;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -26,55 +23,29 @@ import org.lwjgl.opengl.GL20;
 import com.base.engine.core.Util;
 import com.base.engine.core.math.Vector3f;
 import com.base.engine.core.math.Vertex;
-import com.base.engine.rendering.meshLoading.IndexedModel;
-import com.base.engine.rendering.meshLoading.OBJModel;
 import com.base.engine.rendering.resourceManagement.MeshResource;
 
-public class Mesh {
-	private static HashMap<String, MeshResource> loadedModels = new HashMap<String, MeshResource>();
-	private MeshResource resource;
-	private final String fileName;
+public class Mesh extends MeshResource {
 
-	public Mesh(final String fileName) {
-		this.fileName = fileName;
-		final MeshResource oldResource = Mesh.loadedModels.get(fileName);
-
-		if (oldResource != null) {
-			resource = oldResource;
-			resource.addReference();
-		} else {
-			loadMesh(fileName);
-			Mesh.loadedModels.put(fileName, resource);
-		}
+	public Mesh(final Vertex[] vertices, final boolean calcNormals) {
+		super(vertices.length);
+		addVertices(vertices, calcNormals);
 	}
 
-	public Mesh(final Vertex[] vertices, final int[] indices) {
-		this(vertices, indices, false);
-	}
-
-	public Mesh(final Vertex[] vertices, final int[] indices, final boolean calcNormals) {
-		fileName = "";
-		addVertices(vertices, indices, calcNormals);
-	}
-
-	@Override
-	protected void finalize() {
-		if (resource.removeReference() && !fileName.isEmpty()) {
-			Mesh.loadedModels.remove(fileName);
-		}
-	}
-
-	private void addVertices(final Vertex[] vertices, final int[] indices, final boolean calcNormals) {
+	private void addVertices(final Vertex[] vertices, final boolean calcNormals) {
+		
+		int[] indicies = new int[vertices.length];
+		
+		
+		
 		if (calcNormals) {
-			calcNormals(vertices, indices);
+			calcNormals(vertices);
 		}
 
-		resource = new MeshResource(indices.length);
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, resource.getVbo());
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, getVbo());
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL15.GL_STATIC_DRAW);
 
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, resource.getIbo());
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, getIbo());
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL15.GL_STATIC_DRAW);
 	}
 
@@ -84,14 +55,14 @@ public class Mesh {
 		GL20.glEnableVertexAttribArray(2);
 		GL20.glEnableVertexAttribArray(3);
 
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, resource.getVbo());
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, getVbo());
 		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 12);
 		GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 20);
 		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 32);
 
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, resource.getIbo());
-		GL11.glDrawElements(GL11.GL_TRIANGLES, resource.getSize(), GL11.GL_UNSIGNED_INT, 0);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, getIbo());
+		GL11.glDrawElements(GL11.GL_TRIANGLES, getSize(), GL11.GL_UNSIGNED_INT, 0);
 
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -120,33 +91,4 @@ public class Mesh {
 		}
 	}
 
-	private Mesh loadMesh(final String fileName) {
-		final String[] splitArray = fileName.split("\\.");
-		final String ext = splitArray[splitArray.length - 1];
-
-		if (!ext.equals("obj")) {
-			System.err.println("Error: '" + ext + "' file format not supported for mesh data.");
-			new Exception().printStackTrace();
-			System.exit(1);
-		}
-
-		final OBJModel test = new OBJModel("./res/models/" + fileName);
-		final IndexedModel model = test.toIndexedModel();
-
-		final ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-
-		for (int i = 0; i < model.getPositions().size(); i++) {
-			vertices.add(new Vertex(model.getPositions().get(i), model.getTexCoords().get(i), model.getNormals().get(i), model.getTangents().get(i)));
-		}
-
-		final Vertex[] vertexData = new Vertex[vertices.size()];
-		vertices.toArray(vertexData);
-
-		final Integer[] indexData = new Integer[model.getIndices().size()];
-		model.getIndices().toArray(indexData);
-
-		addVertices(vertexData, Util.toIntArray(indexData), false);
-
-		return this;
-	}
 }
