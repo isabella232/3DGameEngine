@@ -6,19 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.base.engine.core.Util;
-import com.base.engine.core.formats.ogre.mesh.Boneassignments;
-import com.base.engine.core.formats.ogre.mesh.Faces;
-import com.base.engine.core.formats.ogre.mesh.Geometry;
 import com.base.engine.core.formats.ogre.mesh.OgreFace;
 import com.base.engine.core.formats.ogre.mesh.OgreMesh;
-import com.base.engine.core.formats.ogre.mesh.Sharedgeometry;
 import com.base.engine.core.formats.ogre.mesh.Submesh;
-import com.base.engine.core.formats.ogre.mesh.Submeshes;
 import com.base.engine.core.formats.ogre.mesh.Vertexboneassignment;
-import com.base.engine.core.math.Face;
 import com.base.engine.core.math.Vector2f;
 import com.base.engine.core.math.Vector3f;
 import com.base.engine.core.math.Vertex;
@@ -80,64 +75,70 @@ public class OgreLoader {
 
 	}
 
-	private static Mesh loadMesh(File ogreMeshFile) {
+	private static Mesh loadMesh(File ogreMeshFile) throws IllegalStateException {
 		HashMap<Integer, BoneDeformationGroup> deformationGroups = new HashMap<Integer, BoneDeformationGroup>();
 		List<Vertex> vertexList = new ArrayList<Vertex>();
+		int[] indices = null;
 
-		JAXBContext jc = JAXBContext.newInstance("com.base.engine.core.formats.ogre.mesh");
-		Unmarshaller u = jc.createUnmarshaller();
-		OgreMesh element = (OgreMesh) u.unmarshal(ogreMeshFile);
-
-		assert (element.getSubmeshes().getSubmesh().size() == 1);
-
-		for (Submesh sm : element.getSubmeshes().getSubmesh()) {
-
-			// Check to see if we have 'usesharedvertices'
-			if (sm.getUsesharedvertices().equalsIgnoreCase("true")) {
-
-				// Load all Shared Geometry
-				assert (element.getSharedgeometry().getVertexbuffer().size() == 1);
-				vertexList = new ArrayList<Vertex>(Integer.parseInt(element.getSharedgeometry().getVertexcount()));
-				loadGeometry(element.getSharedgeometry().getVertexbuffer(), vertexList);
-
-				// Load bone assignments for deformation groups.
-				loadVertexBoneAssignments(element.getBoneassignments().getVertexboneassignment(), deformationGroups);
-
-			} else {
-				// We are not using shared vertices so load from geometry.
-
-				// Load all Geometry
-				assert (sm.getGeometry().getVertexbuffer().size() == 1);
-				vertexList = new ArrayList<Vertex>(Integer.parseInt(sm.getGeometry().getVertexcount()));
-
-				loadGeometry(sm.getGeometry().getVertexbuffer(), vertexList);
-
-				System.out.println("VB Size: " + vertexList.size());
-
-				// Load bone assignments
-				loadVertexBoneAssignments(sm.getBoneassignments().getVertexboneassignment(), deformationGroups);
-
-			}
-
-
-			// Load all faces.
-			List<Face> faceList = new ArrayList<Face>(Integer.parseInt(sm.getFaces().getCount()));
+		JAXBContext jc;
+		try {
+			jc = JAXBContext.newInstance("com.base.engine.core.formats.ogre.mesh");
+			Unmarshaller u = jc.createUnmarshaller();
+			OgreMesh element = (OgreMesh) u.unmarshal(ogreMeshFile);
 			
-			for (OgreFace f : sm.getFaces().getFace()) {
-				Vertex v1 = vertexList.get(Integer.parseInt(f.getV1()));
-				Vertex v2 = vertexList.get(Integer.parseInt(f.getV2()));
-				Vertex v3 = vertexList.get(Integer.parseInt(f.getV3()));
+			assert (element.getSubmeshes().getSubmesh().size() == 1);
 
-				com.base.engine.core.math.Face face = new com.base.engine.core.math.Face(v1, v2, v3);
+			for (Submesh sm : element.getSubmeshes().getSubmesh()) {
 
-				faceList.add(face);
+				// Check to see if we have 'usesharedvertices'
+				if (sm.getUsesharedvertices().equalsIgnoreCase("true")) {
+
+					// Load all Shared Geometry
+					assert (element.getSharedgeometry().getVertexbuffer().size() == 1);
+					vertexList = new ArrayList<Vertex>(Integer.parseInt(element.getSharedgeometry().getVertexcount()));
+					loadGeometry(element.getSharedgeometry().getVertexbuffer(), vertexList);
+
+					// Load bone assignments for deformation groups.
+					loadVertexBoneAssignments(element.getBoneassignments().getVertexboneassignment(), deformationGroups);
+
+				} else {
+					// We are not using shared vertices so load from geometry.
+
+					// Load all Geometry
+					assert (sm.getGeometry().getVertexbuffer().size() == 1);
+					vertexList = new ArrayList<Vertex>(Integer.parseInt(sm.getGeometry().getVertexcount()));
+
+					loadGeometry(sm.getGeometry().getVertexbuffer(), vertexList);
+
+					System.out.println("VB Size: " + vertexList.size());
+
+					// Load bone assignments
+					loadVertexBoneAssignments(sm.getBoneassignments().getVertexboneassignment(), deformationGroups);
+
+				}
+
+
+				// Load all faces and extract the indices.
+
+				indices = new int[Integer.parseInt(sm.getFaces().getCount()) * 3];
+				int index = 0;
+				
+				for (OgreFace f : sm.getFaces().getFace()) {
+					
+					indices[index++] = Integer.parseInt(f.getV1());
+					indices[index++] = Integer.parseInt(f.getV2());
+					indices[index++] = Integer.parseInt(f.getV3());
+					
+				}
+				
+				break; // TODO: Load more than one submesh
 			}
-			break; // TODO: Load more than one submesh
+			
+		} catch (JAXBException e) {
+			throw new IllegalStateException("Error unmarshalling xml data.");
 		}
 		
-		Mesh mesh = new Mesh(vertexList.toArray(new Vertex[0]), indices, calcNormals)
-
-		return mesh;
+		return new Mesh(vertexList.toArray(new Vertex[0]), indices, true);
 
 	}
 

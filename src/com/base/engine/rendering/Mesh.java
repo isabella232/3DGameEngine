@@ -27,19 +27,15 @@ import com.base.engine.rendering.resourceManagement.MeshResource;
 
 public class Mesh extends MeshResource {
 
-	public Mesh(final Vertex[] vertices, final boolean calcNormals) {
+	public Mesh(final Vertex[] vertices, final int[] indices, final boolean calcNormals) {
 		super(vertices.length);
-		addVertices(vertices, calcNormals);
+		addVertices(vertices, indices, calcNormals);
 	}
 
-	private void addVertices(final Vertex[] vertices, final boolean calcNormals) {
-		
-		int[] indicies = new int[vertices.length];
-		
-		
+	private void addVertices(final Vertex[] vertices, final int[] indices, final boolean calcNormals) {
 		
 		if (calcNormals) {
-			calcNormals(vertices);
+			calcNormals(vertices, indices);
 		}
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, getVbo());
