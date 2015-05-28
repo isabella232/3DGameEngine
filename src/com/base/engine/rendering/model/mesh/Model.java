@@ -39,36 +39,4 @@ public class Model extends MeshRenderer {
 		return material;
 	}
 	
-	/*
-	private Mesh loadMesh(final String fileName) {
-		final String[] splitArray = fileName.split("\\.");
-		final String ext = splitArray[splitArray.length - 1];
-
-		if (!ext.equals("obj")) {
-			System.err.println("Error: '" + ext + "' file format not supported for mesh data.");
-			new Exception().printStackTrace();
-			System.exit(1);
-		}
-
-		final OBJModel test = new OBJModel("./res/models/" + fileName);
-		final IndexedModel model = test.toIndexedModel();
-
-		final ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-
-		for (int i = 0; i < model.getPositions().size(); i++) {
-			vertices.add(new Vertex(model.getPositions().get(i), model.getTexCoords().get(i), model.getNormals().get(i), model.getTangents().get(i)));
-		}
-
-		final Vertex[] vertexData = new Vertex[vertices.size()];
-		vertices.toArray(vertexData);
-
-		final Integer[] indexData = new Integer[model.getIndices().size()];
-		model.getIndices().toArray(indexData);
-
-		addVertices(vertexData, Util.toIntArray(indexData), false);
-
-		return this;
-	}
-	*/
-	
 }
