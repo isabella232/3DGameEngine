@@ -48,7 +48,7 @@ public class RenderingEngine extends MappedValues {
 
 		forwardAmbient = new Shader("forward-ambient");
 
-		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
 		GL11.glCullFace(GL11.GL_BACK);
