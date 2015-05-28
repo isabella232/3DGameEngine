@@ -52,7 +52,7 @@ public class TestGame extends Game {
 		planeObject.addComponent(floor);
 		planeObject.getTransform().getPos().set(0, -1, 5);
 		
-		final Material material = new Material(new Texture("oto1024.jpg"), 1, 8, new Texture("oto1024_normal.jpg"), new Texture("oto1024.jpg"), 0.03f, -1.0f);
+		final Material material = new Material(new Texture("oto1024.jpg"), 1, 8, new Texture("oto1024_normal.jpg"), new Texture("oto1024.jpg"), 0.0f, 0.0f);
 		//final Model monkey = ObjLoader.loadObjModel("monkey3.obj", material2);
 		
 		final GameObject elephantObject = new GameObject();
