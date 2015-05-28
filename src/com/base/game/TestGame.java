@@ -90,7 +90,7 @@ public class TestGame extends Game {
 
 		addObject(
 		// AddObject(
-		new GameObject().addComponent(new FreeLook(0.5f, false)).addComponent(new FreeMove(10.0f, 4.0f)).addComponent(new Camera(new Matrix4f().initPerspective((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f))));
+		new GameObject().addComponent(new FreeLook(0.5f, true)).addComponent(new FreeMove(10.0f, 0.0f)).addComponent(new Camera(new Matrix4f().initPerspective((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f))));
 
 		//addObject(testMesh3);
 
