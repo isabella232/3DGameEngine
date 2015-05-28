@@ -44,11 +44,11 @@ public class RenderingEngine extends MappedValues {
 		samplerMap.put("normalMap", 1);
 		samplerMap.put("dispMap", 2);
 
-		addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
+		addVector3f("ambient", new Vector3f(1.0f, 1.0f, 1.0f));
 
 		forwardAmbient = new Shader("forward-ambient");
 
-		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
 		GL11.glCullFace(GL11.GL_BACK);
