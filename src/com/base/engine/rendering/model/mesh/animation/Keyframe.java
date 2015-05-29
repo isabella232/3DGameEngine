@@ -1,10 +1,10 @@
 package com.base.engine.rendering.model.mesh.animation;
 
 public class Keyframe {
-	float tX, tY, tZ;
-	float rX, rY, rZ;
-	float sX, sY, sZ;
-	float rAngle;
+	public float tX, tY, tZ;
+	public float rX, rY, rZ;
+	public float sX, sY, sZ;
+	public float rAngle;
 
 	public Keyframe() {
 	}

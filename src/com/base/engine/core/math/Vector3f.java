@@ -184,7 +184,7 @@ public class Vector3f {
 		return super.equals(obj);
 	}
 
-	public boolean equals(final Vector3f r) {
+	private boolean equals(final Vector3f r) {
 		return x == r.getX() && y == r.getY() && z == r.getZ();
 	}
 }

@@ -60,7 +60,7 @@ public class TestGame extends Game {
 		final Model animatedModel = OgreLoader.loadOgreModel("OtoNew", material);
 		elephantObject.getTransform().getPos().set(0, 4, 5);
 		elephantObject.addComponent(animatedModel);
-		
+		animatedModel.showSkeleton(true);
 		
 		final GameObject directionalLightObject = new GameObject();
 		final DirectionalLight directionalLight = new DirectionalLight(new Vector3f(0, 0, 1), 0.8f);

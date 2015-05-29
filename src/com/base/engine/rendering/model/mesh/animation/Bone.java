@@ -46,7 +46,7 @@ public class Bone {
 	}
 
 	public void setParent(Bone parent) {
-
+		
 		this.parent = parent;
 		transform.setParent(parent.getTransform());
 

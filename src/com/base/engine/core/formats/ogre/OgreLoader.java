@@ -21,7 +21,10 @@ import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.model.mesh.Model;
 import com.base.engine.rendering.model.mesh.Skeleton;
+import com.base.engine.rendering.model.mesh.animation.Bone;
 import com.base.engine.rendering.model.mesh.animation.BoneDeformationGroup;
+import com.base.engine.rendering.model.mesh.animation.Keyframe;
+import com.base.engine.rendering.model.mesh.animation.SkeletalAnimation;
 
 public class OgreLoader {
 
@@ -67,7 +70,7 @@ public class OgreLoader {
 			if (!deformationGroups.containsKey(boneId)) {
 				deformationGroups.put(boneId, new BoneDeformationGroup(boneId));
 			}
-			
+
 			deformationGroups.get(boneId).addVertexDeformation(Integer.parseInt(vba.getVertexindex()), weight);
 
 		}
@@ -76,75 +79,122 @@ public class OgreLoader {
 
 	}
 
-	private static Mesh loadMesh(File ogreMeshFile) throws IllegalStateException {
-		HashMap<Integer, BoneDeformationGroup> deformationGroups = new HashMap<Integer, BoneDeformationGroup>();
-		List<Vertex> vertexList = new ArrayList<Vertex>();
-		int[] indices = null;
-
-		JAXBContext jc;
+	private static Skeleton loadSkeleton(File skeletonFile, HashMap<Integer, BoneDeformationGroup> deformationGroups) {
+		
+		
+		Unmarshaller u;
+		com.base.engine.core.formats.ogre.skeleton.Skeleton element;
 		try {
-			jc = JAXBContext.newInstance("com.base.engine.core.formats.ogre.mesh");
-			Unmarshaller u = jc.createUnmarshaller();
-			OgreMesh element = (OgreMesh) u.unmarshal(ogreMeshFile);
-			
-			assert (element.getSubmeshes().getSubmesh().size() == 1);
-
-			for (Submesh sm : element.getSubmeshes().getSubmesh()) {
-
-				// Check to see if we have 'usesharedvertices'
-				if (sm.getUsesharedvertices().equalsIgnoreCase("true")) {
-
-					// Load all Shared Geometry
-					assert (element.getSharedgeometry().getVertexbuffer().size() == 1);
-					vertexList = new ArrayList<Vertex>(Integer.parseInt(element.getSharedgeometry().getVertexcount()));
-					loadGeometry(element.getSharedgeometry().getVertexbuffer(), vertexList);
-
-					// Load bone assignments for deformation groups.
-					loadVertexBoneAssignments(element.getBoneassignments().getVertexboneassignment(), deformationGroups);
-
-				} else {
-					// We are not using shared vertices so load from geometry.
-
-					// Load all Geometry
-					assert (sm.getGeometry().getVertexbuffer().size() == 1);
-					vertexList = new ArrayList<Vertex>(Integer.parseInt(sm.getGeometry().getVertexcount()));
-
-					loadGeometry(sm.getGeometry().getVertexbuffer(), vertexList);
-
-					System.out.println("VB Size: " + vertexList.size());
-
-					// Load bone assignments
-					loadVertexBoneAssignments(sm.getBoneassignments().getVertexboneassignment(), deformationGroups);
-
-				}
-
-
-				// Load all faces and extract the indices.
-
-				indices = new int[Integer.parseInt(sm.getFaces().getCount()) * 3];
-				int index = 0;
-				
-				for (OgreFace f : sm.getFaces().getFace()) {
-					
-					indices[index++] = Integer.parseInt(f.getV1());
-					indices[index++] = Integer.parseInt(f.getV2());
-					indices[index++] = Integer.parseInt(f.getV3());
-					
-				}
-				
-				break; // TODO: Load more than one submesh
-			}
-			
+			JAXBContext jc = JAXBContext.newInstance("com.base.engine.core.formats.ogre.skeleton");	  
+			u = jc.createUnmarshaller();
+			element = (com.base.engine.core.formats.ogre.skeleton.Skeleton) u.unmarshal(skeletonFile);
 		} catch (JAXBException e) {
-			throw new IllegalStateException("Error unmarshalling xml data.");
+			e.printStackTrace();
+			return null;
 		}
 		
-		return new Mesh(vertexList.toArray(new Vertex[0]), indices, true);
-
-	}
-
-	private static Skeleton loadSkeleton(File skeletonFile) {
-		return null;
+		HashMap<String, Bone> boneMap = new HashMap<String, Bone>();
+		
+		// Load the bone data (position/rotation/angle).
+		for(com.base.engine.core.formats.ogre.skeleton.Bone bone: element.getBones().getBone()){
+			
+			Bone b = new Bone();
+			
+			b.setName(bone.getName());
+			//b.setParent(null);
+			b.setBoneId(Integer.parseInt(bone.getId()));
+			
+			b.setPosition(
+					Float.parseFloat(bone.getPosition().getX()),
+					Float.parseFloat(bone.getPosition().getY()),
+					Float.parseFloat(bone.getPosition().getZ())
+					);
+			
+			b.setRotation(
+					Float.parseFloat(bone.getRotation().getAxis().getX()),
+					Float.parseFloat(bone.getRotation().getAxis().getY()),
+					Float.parseFloat(bone.getRotation().getAxis().getZ()),
+					Float.parseFloat(bone.getRotation().getAngle())
+					);
+			
+			
+			boneMap.put(bone.getName(), b);
+			System.out.println(b.getName());
+		}
+		
+		//System.out.println("-----------------------------------------------");
+		
+		
+		Skeleton skeleton = new Skeleton(deformationGroups);
+		
+		// Create the hierarchy
+		for(com.base.engine.core.formats.ogre.skeleton.Boneparent boneParent : element.getBonehierarchy().getBoneparent()){
+			boneMap.get(boneParent.getParent()).addChild(boneMap.get(boneParent.getBone()));
+			
+			//System.out.println("Parent: " + boneParent.getParent());
+			//System.out.println(" Child: " + boneMap.get(boneParent.getBone()));
+			
+		}
+		
+		// Load animation tracks
+		if(element.getAnimations()!=null && element.getAnimations().getAnimation()!=null){
+			for(com.base.engine.core.formats.ogre.skeleton.Animation anim:element.getAnimations().getAnimation()){
+				for(com.base.engine.core.formats.ogre.skeleton.Track track : anim.getTracks().getTrack()) {
+					
+					Bone bone = boneMap.get(track.getBone());
+					
+					bone.setFrames(anim.getName(), new ArrayList<Keyframe>());
+					
+					for(com.base.engine.core.formats.ogre.skeleton.Keyframe keyframe:track.getKeyframes().getKeyframe()) {
+						
+						Keyframe keyFrame = new Keyframe();
+						
+						keyFrame.setTranslate(
+								Float.parseFloat(keyframe.getTranslate().getX()),
+								Float.parseFloat(keyframe.getTranslate().getY()),
+								Float.parseFloat(keyframe.getTranslate().getZ()));
+						
+						keyFrame.setRotate(
+								Float.parseFloat(keyframe.getRotate().getAxis().getX()), // TODO: X y Z exchanged
+								Float.parseFloat(keyframe.getRotate().getAxis().getY()),
+								Float.parseFloat(keyframe.getRotate().getAxis().getZ()),
+								Float.parseFloat(keyframe.getRotate().getAngle()));
+						
+						if (keyframe.getScale() != null) {
+							keyFrame.setScale(
+									Float.parseFloat(keyframe.getScale().getX()),
+									Float.parseFloat(keyframe.getScale().getY()),
+									Float.parseFloat(keyframe.getScale().getZ()));
+						} else {
+							keyFrame.setScale(1.0f, 1.0f, 1.0f);
+						}
+						
+						bone.getFrames(anim.getName()).add(keyFrame);
+						
+						//System.out.println("Anim: " + anim.getName());
+						//System.out.println("Bone: " + bone.getName());
+						
+					}
+					
+				}
+			}
+		}
+		
+		// Add all bone tree roots to the skeleton
+		for(Bone bone : boneMap.values()){
+			if(bone.getParent()!=null){
+				continue;
+			}
+			skeleton.addBone(bone);
+			//System.out.println("Parent: " + bone.getParent());
+			//System.out.println("Bone: " + bone);
+		}
+		
+		// Build the hashMap so we can reference bones by their Id.
+		//skeleton.hashBones();
+		
+		return skeleton;
+		
 	}
 
 	public static Model loadOgreModel(final String modelName, Material material) throws IllegalStateException {
@@ -155,18 +205,85 @@ public class OgreLoader {
 		Mesh mesh = null;
 		Skeleton skeleton = null;
 
+		HashMap<Integer, BoneDeformationGroup> deformationGroups = new HashMap<Integer, BoneDeformationGroup>();
+		List<Vertex> vertexList = new ArrayList<Vertex>();
+
 		if (meshFile != null) {
-			mesh = loadMesh(meshFile);
+
+			int[] indices = null;
+
+			JAXBContext jc;
+			try {
+				jc = JAXBContext.newInstance("com.base.engine.core.formats.ogre.mesh");
+				Unmarshaller u = jc.createUnmarshaller();
+				OgreMesh element = (OgreMesh) u.unmarshal(meshFile);
+
+				assert (element.getSubmeshes().getSubmesh().size() == 1);
+
+				for (Submesh sm : element.getSubmeshes().getSubmesh()) {
+
+					// Check to see if we have 'usesharedvertices'
+					if (sm.getUsesharedvertices().equalsIgnoreCase("true")) {
+
+						// Load all Shared Geometry
+						assert (element.getSharedgeometry().getVertexbuffer().size() == 1);
+						vertexList = new ArrayList<Vertex>(Integer.parseInt(element.getSharedgeometry().getVertexcount()));
+						loadGeometry(element.getSharedgeometry().getVertexbuffer(), vertexList);
+
+						// Load bone assignments for deformation groups.
+						loadVertexBoneAssignments(element.getBoneassignments().getVertexboneassignment(), deformationGroups);
+
+					} else {
+						// We are not using shared vertices so load from
+						// geometry.
+
+						// Load all Geometry
+						assert (sm.getGeometry().getVertexbuffer().size() == 1);
+						vertexList = new ArrayList<Vertex>(Integer.parseInt(sm.getGeometry().getVertexcount()));
+
+						loadGeometry(sm.getGeometry().getVertexbuffer(), vertexList);
+
+						System.out.println("VB Size: " + vertexList.size());
+
+						// Load bone assignments
+						loadVertexBoneAssignments(sm.getBoneassignments().getVertexboneassignment(), deformationGroups);
+
+					}
+
+					// Load all faces and extract the indices.
+
+					indices = new int[Integer.parseInt(sm.getFaces().getCount()) * 3];
+					int index = 0;
+
+					for (OgreFace f : sm.getFaces().getFace()) {
+
+						indices[index++] = Integer.parseInt(f.getV1());
+						indices[index++] = Integer.parseInt(f.getV2());
+						indices[index++] = Integer.parseInt(f.getV3());
+
+					}
+
+					break; // TODO: Load more than one submesh
+				}
+
+			} catch (JAXBException e) {
+				throw new IllegalStateException("Error unmarshalling xml data.");
+			}
+
+			mesh = new Mesh(vertexList.toArray(new Vertex[0]), indices, true);
 		}
 
 		if (mesh == null) {
 			throw new IllegalStateException("Mesh file contained no mesh data.");
 		}
 
-		if (skeletonFile != null) {
-			skeleton = loadSkeleton(skeletonFile);
+		if (!deformationGroups.isEmpty()) {
+			if (skeletonFile != null) {
+				skeleton = loadSkeleton(skeletonFile, deformationGroups);
+			} else {
+				throw new IllegalStateException("Bone assignments have no skeleton file.");
+			}
 		}
-
 		return new Model(mesh, skeleton, material);
 	}
 
