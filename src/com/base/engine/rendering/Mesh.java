@@ -54,10 +54,10 @@ public class Mesh extends MeshResource {
 		GL20.glEnableVertexAttribArray(3);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, getVbo());
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 0);
-		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 12);
-		GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 20);
-		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 32);
+		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 0);		// Position
+		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 12);	// Texture coord
+		GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 20);	// Normal
+		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, Vertex.SIZE * 4, 32);	// Tangent
 
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, getIbo());
 		GL11.glDrawElements(GL11.GL_TRIANGLES, getSize(), GL11.GL_UNSIGNED_INT, 0);
